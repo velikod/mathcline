@@ -14,13 +14,13 @@ This repository contains mathematical tools and scripts using Python libraries i
    ```bash
    # Download Miniconda installer
    curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-MacOSX-arm64.sh
-   
+
    # Install Miniconda
    bash Miniconda3-latest-MacOSX-arm64.sh -b
-   
+
    # Initialize conda for your shell
    ~/miniconda3/bin/conda init zsh  # or bash, depending on your shell
-   
+
    # Restart your terminal or source your shell config
    source ~/.zshrc  # or ~/.bashrc
    ```
@@ -40,6 +40,11 @@ This repository contains mathematical tools and scripts using Python libraries i
 3. **Activate the environment**:
    ```bash
    conda activate mathenv
+   ```
+
+4. **Set up pre-commit hooks**:
+   ```bash
+   pre-commit install
    ```
 
 ### Testing the Installation
@@ -68,6 +73,23 @@ The Python environment includes:
 - Manim 0.19.0 for creating mathematical animations
 - Supporting libraries (Cairo, Pango, FFmpeg) for rendering
 
+## Development Workflow
+
+### Pre-commit Hooks
+
+This repository uses pre-commit hooks to maintain code quality. The hooks include:
+
+- Code formatting with Black
+- Import sorting with isort
+- Linting with flake8 (with relaxed docstring requirements)
+- Basic file checks (trailing whitespace, file endings, etc.)
+
+The pre-commit hooks run automatically when you commit changes. To run them manually:
+
+```bash
+pre-commit run --all-files
+```
+
 ## License
 
-[Add license information] 
+[Add license information]
