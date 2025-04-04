@@ -1,8 +1,12 @@
-# Python artifacts
+# Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
 *$py.class
+
+# C extensions
 *.so
+
+# Distribution / packaging
 .Python
 build/
 develop-eggs/
@@ -20,30 +24,7 @@ wheels/
 .installed.cfg
 *.egg
 
-# Jupyter Notebook
-.ipynb_checkpoints
-*.ipynb
-
-# Test files
-test_*.py
-test_*.ipynb
-
-# Specific files to exclude
-symbolic_cline.py
-*manim*
-
-# Environment & IDE
-.env
-.venv
-env/
-venv/
-ENV/
-.idea/
-.vscode/
-*.swp
-.DS_Store
-
-# Coverage reports
+# Unit test / coverage reports
 htmlcov/
 .tox/
 .coverage
@@ -51,4 +32,43 @@ htmlcov/
 .cache
 nosetests.xml
 coverage.xml
-*.cover 
+*.cover
+.hypothesis/
+.pytest_cache/
+
+# Sphinx documentation
+docs/_build/
+docs/_autosummary/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+
+# Environment directories
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# macOS
+.DS_Store
+
+# Python virtual environment
+mathenv/
+
+# Test files
+test_*.py
+test_*.ipynb
+
+# Specific files to exclude
+symbolic_cline.py
+*manim* 
