@@ -145,9 +145,9 @@ class Cline:
         r"""Construct a cline from three points in the complex plane.
 
         Args:
-            z0 (complex): First point
-            z1 (complex): Second point
-            z2 (complex): Third point
+            z0 (complex or tuple): First point, either complex number or tuple (real, imag)
+            z1 (complex or tuple): Second point, either complex number or tuple (real, imag)
+            z2 (complex or tuple): Third point, either complex number or tuple (real, imag)
 
         Returns:
             Cline: A cline passing through the three points
@@ -166,9 +166,21 @@ class Cline:
                - Calculate d = -(|z₀|² + 2Re(αz₀))
         """
         # Convert inputs to complex numbers
-        z0 = complex(z0)
-        z1 = complex(z1)
-        z2 = complex(z2)
+        # Handle tuples as (real, imag) coordinates
+        if isinstance(z0, tuple):
+            z0 = complex(z0[0], z0[1])
+        else:
+            z0 = complex(z0)
+
+        if isinstance(z1, tuple):
+            z1 = complex(z1[0], z1[1])
+        else:
+            z1 = complex(z1)
+
+        if isinstance(z2, tuple):
+            z2 = complex(z2[0], z2[1])
+        else:
+            z2 = complex(z2)
 
         # Check if the points are collinear
         if abs(z1 - z0) < 1e-10:  # z0 and z1 are the same point
@@ -241,6 +253,96 @@ class Cline:
         # Create the cline and store the points
         cline = cls(c=c, alpha=alpha, d=d)
         cline.points = [z0, z1, z2]
+        return cline
+
+    @classmethod
+    def from_line(cls, z0, z1):
+        r"""Construct a cline representing a line through two points.
+
+        Args:
+            z0 (complex or tuple): First point, either complex number or tuple (real, imag)
+            z1 (complex or tuple): Second point, either complex number or tuple (real, imag)
+
+        Returns:
+            Cline: A cline representing the line through z0 and z1
+
+        For a line, we set c = 0, and the parameters are calculated as:
+            - alpha = i*(z1 - z0) (perpendicular to the line direction)
+            - d = -2*Re(alpha*z0)
+        """
+        # Convert inputs to complex numbers
+        # Handle tuples as (real, imag) coordinates
+        if isinstance(z0, tuple):
+            z0 = complex(z0[0], z0[1])
+        else:
+            z0 = complex(z0)
+
+        if isinstance(z1, tuple):
+            z1 = complex(z1[0], z1[1])
+        else:
+            z1 = complex(z1)
+
+        # Check if points are distinct
+        if abs(z1 - z0) < 1e-10:
+            raise ValueError("Points must be distinct to define a line")
+
+        # For a line, set c = 0
+        c = 0.0
+
+        # Calculate alpha = i*(z₁ - z₀)
+        alpha = 1j * (z1 - z0)
+
+        # Calculate d = -2*Re(alpha*z0)
+        d = -2 * np.real(alpha * z0)
+
+        # Create the cline and store the points
+        cline = cls(c=c, alpha=alpha, d=d)
+        cline.points = [z0, z1]
+        return cline
+
+    @classmethod
+    def from_circle(cls, center, radius):
+        r"""Construct a cline representing a circle with specified center and radius.
+
+        Args:
+            center (complex or tuple): Center of the circle,
+            either complex number or tuple (real, imag)
+            radius (float): Radius of the circle (must be positive)
+
+        Returns:
+            Cline: A cline representing the circle with given center and radius
+
+        For a circle, we set c = 1, and the parameters are calculated as:
+            - alpha = -center
+            - d = |center|^2 - radius^2
+        """
+        # Convert center to complex number
+        if isinstance(center, tuple):
+            center = complex(center[0], center[1])
+        else:
+            center = complex(center)
+
+        # Validate radius
+        radius = float(radius)
+        if radius <= 0:
+            raise ValueError("Radius must be positive")
+
+        # For a circle, set c = 1
+        c = 1.0
+
+        # Calculate alpha = -center
+        alpha = -center
+
+        # Calculate d = |center|^2 - radius^2
+        d = abs(center) ** 2 - radius**2
+
+        # Create the cline
+        cline = cls(c=c, alpha=alpha, d=d)
+
+        # Store the center and radius for reference
+        cline.center = center
+        cline.radius = radius
+
         return cline
 
     def plot(
