@@ -25,7 +25,25 @@ pip install cline
 
 ## Usage
 
-### Creating Clines
+### Creating Clines from Equation Parameters
+
+```python
+from cline import Cline
+
+# Create a cline directly using the equation parameters
+# This represents a circle with center at 3+4j and radius 5
+custom_cline = Cline(c=1.0, alpha=-3-4j, d=16)
+print(custom_cline)
+
+# Plot the cline - automatic window calculation based on geometry
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots(figsize=(8, 8))
+custom_cline.plot(ax=ax, color='blue', label='Circle')
+plt.legend()
+plt.show()
+```
+
+### Creating Circles
 
 ```python
 from cline import Cline
@@ -34,27 +52,28 @@ import matplotlib.pyplot as plt
 # Create a circle with center at 1+2j and radius 3
 circle = Cline.from_circle(center=1+2j, radius=3)
 
+# Access circle properties
+print(f"Center: {circle.center}, Radius: {circle.radius}")
+```
+
+### Creating Lines
+
+```python
 # Create a line passing through two points
 line = Cline.from_line(z0=0, z1=1+1j)
 
-# Create a cline passing through three points
-# (This will be a circle if the points are not collinear)
-cline = Cline.from_three_points(z0=0, z1=1, z2=1j)
-
-# Create a cline directly using the equation parameters
-custom_cline = Cline(c=1.0, alpha=-3-4j, d=16)
-```
-
-### Accessing Cline Properties
-
-```python
-# For circles
-print(f"Center: {circle.center}, Radius: {circle.radius}")
-
-# For lines
+# Access line properties
 print(f"Normal vector: {line.normal_vector}")
 print(f"Direction vector: {line.direction_vector}")
 print(f"Distance from origin: {line.distance_from_origin}")
+```
+
+### Creating Clines from Three Points
+
+```python
+# Create a cline passing through three points
+# (This will be a circle if the points are not collinear)
+cline = Cline.from_three_points(z0=0, z1=1, z2=1j)
 ```
 
 ### Visualizing Clines
@@ -63,19 +82,11 @@ print(f"Distance from origin: {line.distance_from_origin}")
 # Plot multiple clines on the same figure
 fig, ax = plt.subplots(figsize=(8, 8))
 
-# Plot with default settings
+# Plot circle and line - limits automatically calculated
 circle.plot(ax=ax, color='blue', label='Circle')
+line.plot(ax=ax, color='red', label='Line')
 
-# Customize appearance
-line.plot(
-    ax=ax,
-    color='red',
-    label='Line',
-    xlim=(-5, 5),
-    ylim=(-5, 5),
-    point_color='green'
-)
-
+# Add legend and show
 plt.legend()
 plt.show()
 ```
@@ -92,7 +103,7 @@ plt.show()
   - Circle center and radius
   - Line normal and direction vectors
   - Distance from origin
-- Visualization using Matplotlib
+- Visualization using Matplotlib with automatic window calculation
 - Mathematical operations (coming soon)
 
 ## Requirements

@@ -2,7 +2,7 @@ r"""
 Cline class for representing circles and lines in the complex plane.
 
 A cline is a circle or line that can be represented by the equation:
-cz\bar(z) + alpha*z + \bar(alpha)*\bar(z) + d = 0
+cz\bar{z} + alpha*z + \bar{alpha}*\bar{z} + d = 0
 
 where:
 - c and d are real numbers
@@ -20,7 +20,7 @@ class Cline:
     r"""Class representing a circle or line in the complex plane using the general equation.
 
     The equation is:
-    cz\bar(z) + alpha*z + \bar(alpha)*\bar(z) + d = 0
+    cz\bar{z} + alpha*z + \bar{alpha}*\bar{z} + d = 0
 
     where c and d are real numbers and alpha is complex.
     """
@@ -29,7 +29,7 @@ class Cline:
         r"""Initialize a cline with its equation parameters.
 
         Args:
-            c (float): Real coefficient of z\bar(z)
+            c (float): Real coefficient of z\bar{z}
             alpha (complex): Complex coefficient of z
             d (float): Real constant term
         """
@@ -349,8 +349,8 @@ class Cline:
         self,
         ax=None,
         figsize=(8, 8),
-        xlim=(-5, 5),
-        ylim=(-5, 5),
+        xlim=None,
+        ylim=None,
         color="blue",
         point_color="red",
         label=None,
@@ -364,8 +364,8 @@ class Cline:
         Args:
             ax (matplotlib.axes.Axes, optional): Axes to plot on. If None, a new figure is created.
             figsize (tuple, optional): Figure size if creating a new figure. Defaults to (8, 8).
-            xlim (tuple, optional): x-axis limits. Defaults to (-5, 5).
-            ylim (tuple, optional): y-axis limits. Defaults to (-5, 5).
+            xlim (tuple, optional): x-axis limits. If None, automatically calculated.
+            ylim (tuple, optional): y-axis limits. If None, automatically calculated.
             color (str, optional): Color of the cline. Defaults to 'blue'.
             point_color (str, optional): Color of the points. Defaults to 'red'.
             label (str, optional): Label for the cline in the legend. Defaults to None.
@@ -383,10 +383,48 @@ class Cline:
         if ax is None:
             fig, ax = plt.subplots(figsize=figsize)
 
-        # Set the aspect ratio to equal and the limits
+        # Set the aspect ratio to equal
         ax.set_aspect("equal")
-        ax.set_xlim(xlim)
-        ax.set_ylim(ylim)
+
+        # Calculate appropriate limits if not provided
+        auto_xlim = None
+        auto_ylim = None
+
+        # Auto-calculate limits based on cline type
+        if self.is_circle:
+            # For circles, use center and radius
+            radius_margin = 1.5 * self.radius
+            auto_xlim = (self.center.real - radius_margin, self.center.real + radius_margin)
+            auto_ylim = (self.center.imag - radius_margin, self.center.imag + radius_margin)
+        elif self.is_point:
+            # For points, use a small window around the point
+            auto_xlim = (self.point.real - 1, self.point.real + 1)
+            auto_ylim = (self.point.imag - 1, self.point.imag + 1)
+        elif self.is_line:
+            if self.points is not None and len(self.points) >= 2:
+                # For lines, use the points with a margin
+                p1, p2 = self.points[0], self.points[1]
+                x_diff = abs(p1.real - p2.real)
+                y_diff = abs(p1.imag - p2.imag)
+                x_margin = max(2 * x_diff, 2)
+                y_margin = max(2 * y_diff, 2)
+
+                # Handle different orderings of coordinates
+                x_min = min(p1.real, p2.real) - x_margin
+                x_max = max(p1.real, p2.real) + x_margin
+                y_min = min(p1.imag, p2.imag) - y_margin
+                y_max = max(p1.imag, p2.imag) + y_margin
+
+                auto_xlim = (x_min, x_max)
+                auto_ylim = (y_min, y_max)
+            else:
+                # Fallback for lines without stored points
+                auto_xlim = (-5, 5)
+                auto_ylim = (-5, 5)
+
+        # Apply limits, prioritizing provided values over auto-calculated ones
+        ax.set_xlim(xlim if xlim is not None else auto_xlim)
+        ax.set_ylim(ylim if ylim is not None else auto_ylim)
 
         # Add grid
         ax.grid(True, linestyle="--", alpha=0.7)
@@ -433,30 +471,103 @@ class Cline:
             )
 
         elif self.is_line:
-            # Plot a line
-            # For a line with normal n at distance d from origin,
-            # parametrize as z(t) = d*n + t*i*n where t is a real parameter
+            # Completely rewritten line plotting logic for maximum robustness
+            if self.points is not None and len(self.points) >= 2:
+                # Get the two points that define the line
+                z0, z1 = self.points[0], self.points[1]
 
-            # Calculate how far to go in each direction to reach the plot boundary
-            max_extent = max(abs(xlim[0]), abs(xlim[1]), abs(ylim[0]), abs(ylim[1]))
-            t_values = np.linspace(-2 * max_extent, 2 * max_extent, num_points)
+                # Get the current axis limits
+                x_min, x_max = ax.get_xlim()
+                y_min, y_max = ax.get_ylim()
 
-            # Generate points along the line
-            points = np.array([self.point_on_line + t * self.direction_vector for t in t_values])
+                # Calculate the slope
+                dx = z1.real - z0.real
+                dy = z1.imag - z0.imag
 
-            # Filter points within the plot limits
-            mask = (
-                (points.real >= xlim[0])
-                & (points.real <= xlim[1])
-                & (points.imag >= ylim[0])
-                & (points.imag <= ylim[1])
-            )
-            filtered_points = points[mask]
+                # Handle vertical lines (or nearly vertical lines)
+                if abs(dx) < 1e-10:
+                    # Use a vertical line at the x-coordinate
+                    x_coords = [z0.real, z0.real]
+                    y_coords = [y_min, y_max]
+                else:
+                    # For non-vertical lines, calculate y = m(x - x0) + y0
+                    slope = dy / dx
 
-            if len(filtered_points) > 0:
-                x = filtered_points.real
-                y = filtered_points.imag
-                ax.plot(x, y, color=color, label=label, **kwargs)
+                    # Calculate y-coordinates at the min and max x values
+                    y_at_xmin = slope * (x_min - z0.real) + z0.imag
+                    y_at_xmax = slope * (x_max - z0.real) + z0.imag
+
+                    # Use the boundaries to create the line
+                    x_coords = [x_min, x_max]
+                    y_coords = [y_at_xmin, y_at_xmax]
+
+                    # If the line runs outside the y-axis boundaries, calculate intersections
+                    if (
+                        y_at_xmin < y_min
+                        or y_at_xmin > y_max
+                        or y_at_xmax < y_min
+                        or y_at_xmax > y_max
+                    ):
+                        points = []
+
+                        # Calculate intersection with each boundary line
+                        # Left boundary (x = x_min)
+                        if y_min <= y_at_xmin <= y_max:
+                            points.append((x_min, y_at_xmin))
+
+                        # Right boundary (x = x_max)
+                        if y_min <= y_at_xmax <= y_max:
+                            points.append((x_max, y_at_xmax))
+
+                        # Calculate x-coordinates at min and max y values
+                        if abs(slope) > 1e-10:  # Avoid division by zero
+                            # Calculate x at minimum y value
+                            x_at_ymin = (y_min - z0.imag) / slope + z0.real
+                            # Calculate x at maximum y value
+                            x_at_ymax = (y_max - z0.imag) / slope + z0.real
+
+                            # Bottom boundary (y = y_min)
+                            if x_min <= x_at_ymin <= x_max:
+                                points.append((x_at_ymin, y_min))
+
+                            # Top boundary (y = y_max)
+                            if x_min <= x_at_ymax <= x_max:
+                                points.append((x_at_ymax, y_max))
+
+                        # If we found at least 2 intersection points, use them
+                        if len(points) >= 2:
+                            # Sort the points by x-coordinate for consistency
+                            points.sort()
+                            x_coords = [p[0] for p in points[:2]]
+                            y_coords = [p[1] for p in points[:2]]
+
+                # Double-check if the line actually intersects the plot area
+                if len(x_coords) >= 2:
+                    # Plot the line
+                    ax.plot(x_coords, y_coords, color=color, label=label, **kwargs)
+            else:
+                # Fallback approach if points are not available
+                # Draw a line in the direction of the normal vector through the origin
+                direction = self.direction_vector
+
+                # Calculate a reasonable length for the line
+                max_extent = max(
+                    abs(ax.get_xlim()[0]),
+                    abs(ax.get_xlim()[1]),
+                    abs(ax.get_ylim()[0]),
+                    abs(ax.get_ylim()[1]),
+                )
+
+                # Generate points along the line
+                t_values = np.linspace(-2 * max_extent, 2 * max_extent, num_points)
+                points = [self.point_on_line + t * direction for t in t_values]
+
+                # Extract x and y coordinates
+                x_coords = [p.real for p in points]
+                y_coords = [p.imag for p in points]
+
+                # Plot the line
+                ax.plot(x_coords, y_coords, color=color, label=label, **kwargs)
 
         # Plot the points used to create the cline if available and requested
         if self.points is not None and show_points:
