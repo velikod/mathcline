@@ -6,14 +6,16 @@ A Python library for representing circles and lines in the complex plane using t
 
 A cline is a circle or line that can be represented by the equation:
 
-cz\bar(z) + alpha*z + \bar(alpha)*\bar(z) + d = 0
+```math
+cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0
+```
 
 where:
-- c and d are real numbers
-- alpha is a complex number
-- It's a circle if |alpha|^2 > c*d and c ≠ 0
-- It's a line if c = 0
-- It's a point if |alpha|^2 = c*d and c ≠ 0
+- $c$ and $d$ are real numbers
+- $\alpha$ is a complex number
+- It's a circle if $|\alpha|^2 > c \cdot d$ and $c \neq 0$
+- It's a line if $c = 0$
+- It's a point if $|\alpha|^2 = c \cdot d$ and $c \neq 0$
 
 This unified representation allows for elegant manipulation of both circles and lines in the complex plane.
 
@@ -31,8 +33,8 @@ pip install cline
 from cline import Cline
 
 # Create a cline directly using the equation parameters
-# This represents a circle with center at 3+4j and radius 5
-custom_cline = Cline(c=1.0, alpha=-3-4j, d=16)
+# c=1, d=1, alpha=2+1j
+custom_cline = Cline(c=1.0, alpha=2+1j, d=1.0)
 print(custom_cline)
 
 # Plot the cline - automatic window calculation based on geometry
@@ -91,6 +93,52 @@ plt.legend()
 plt.show()
 ```
 
+## Mathematical Formulation
+
+### Circle Representation
+
+When $c \neq 0$ and $|\alpha|^2 > c \cdot d$, the equation represents a circle with:
+
+```math
+\text{center} = -\frac{\alpha}{c}
+```
+
+```math
+\text{radius} = \frac{\sqrt{|\alpha|^2 - cd}}{|c|}
+```
+
+### Line Representation
+
+When $c = 0$, the equation becomes:
+
+```math
+\alpha z + \bar{\alpha}\bar{z} + d = 0
+```
+
+which can be rewritten in Cartesian form as:
+
+```math
+a\cdot x - b \cdot y + \frac{d}{2} = 0
+```
+
+where $\alpha = a + bi$, and:
+- Normal vector: $\alpha$
+- Direction vector: $b - ia$ (perpendicular to normal)
+- Distance from origin: $\frac{|d|}{2|\alpha|}$
+
+### From Three Points
+
+Given three points $z_0$, $z_1$, and $z_2$ in the complex plane, we can construct a cline:
+
+1. If the points are collinear:
+   - Set $c = 0$ (representing a line)
+   - Calculate $\alpha = i(z_1 - z_0)$ perpendicular to the line direction
+   - Solve for $d = -2\text{Re}(\alpha z_0)$
+
+2. If the points are not collinear:
+   - Set $c = 1$ (representing a circle)
+   - Solve a linear system of equations for $\alpha$ and $d$
+
 ## Features
 
 - Unified representation of circles and lines using the cline equation
@@ -104,13 +152,17 @@ plt.show()
   - Line normal and direction vectors
   - Distance from origin
 - Visualization using Matplotlib with automatic window calculation
-- Mathematical operations (coming soon)
+- Comprehensive mathematical derivations in the documentation
 
 ## Requirements
 
 - Python 3.6+
 - NumPy
 - Matplotlib
+
+## Documentation
+
+Full documentation is available at: [https://velikod.github.io/mathcline](https://velikod.github.io/mathcline)
 
 ## License
 
