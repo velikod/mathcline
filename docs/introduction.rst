@@ -1,10 +1,16 @@
 Introduction
 ============
 
+The open source book `Geometry with an Introduction to Cosmic Topology <https://mphitchman.com/geometry/preface.html>`_
+by Michael P. Hitchman is a fascinating introduction to non-Euclidean geometries following the Erlangen program.
+The approach in the book relies heavily on Möbius transformations and their effects on *clines*.
+
+This repo aims to provide an implementation of the clines described in the book. Currently only numerical treatment is implemented but the plan is to add symbolic treatment as well.
+
 What is a Cline?
 ---------------
 
-A **cline** is a mathematical concept that unifies circles and lines in the complex plane under a single equation:
+A **cline** is a mathematical concept (see `Definition 3.2.3 <https://mphitchman.com/geometry/section3-2.html>`_) that unifies circles and lines in the complex plane under a single equation:
 
 .. math::
 
@@ -68,30 +74,21 @@ The **Cline** library provides:
 
 1. **Unified Representation**: Represent both circles and lines with a single class
 2. **Multiple Construction Methods**:
+
+   - From direct equation parameters
    - From three points
    - From circle center and radius
    - From two points (for a line)
-   - From direct equation parameters
+
+
 3. **Easy Access to Properties**:
+
    - Circle center and radius
    - Line normal and direction vectors
    - Distance from origin
+
 4. **Visualization**: Plot circles and lines using Matplotlib
 
-Mathematical Foundation
------------------------
-
-For a circle with center :math:`z_0` and radius :math:`r`, the cline parameters are:
-
-- :math:`c = 1`
-- :math:`\alpha = -z_0`
-- :math:`d = |z_0|^2 - r^2`
-
-For a line with normal vector :math:`n` at distance :math:`\rho` from the origin, the cline parameters are:
-
-- :math:`c = 0`
-- :math:`\alpha = i \cdot n`
-- :math:`d = -2\rho |n|`
 
 Why Use Clines?
 --------------
@@ -100,4 +97,4 @@ Clines provide several advantages:
 
 - **Unified Treatment**: Algorithms can work with both circles and lines
 - **Transformation Properties**: Clines transform elegantly under Möbius transformations
-- **Algebraic Simplicity**: Representing complex geometric relationships with simple equations
+- **Algebraic Simplicity**: Representing complex geometric relationships with simple equati
