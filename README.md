@@ -2,7 +2,7 @@
 
 A Python library for representing circles and lines in the complex plane using the general _cline_ equation.
 
-The inspiration for this package comes from open source book [Geometry with an Introduction to Cosmic Topology](https://mphitchman.com/geometry/preface.html) by Michael P. Hitchman is a fascinating introduction to non-Euclidean geometries following the Erlangen program. The approach in the book relies heavily on Möbius transformations and their effects on _clines_.
+The inspiration for this package comes from the open source book [Geometry with an Introduction to Cosmic Topology](https://mphitchman.com/geometry/preface.html) by Michael P. Hitchman, which is a fascinating introduction to non-Euclidean geometries following the Erlangen program. The approach in the book relies heavily on Möbius transformations and their effects on _clines_.
 
 ## Documentation
 
