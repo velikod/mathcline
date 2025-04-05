@@ -158,19 +158,139 @@ class Cline:
         Returns:
             Cline: A cline passing through the three points
 
+        Mathematical Derivation:
+            Substituting three points into the general cline equation:
+
+            .. math::
+
+               c|z|^2 + \alpha z + \bar{\alpha}\bar{z} + d = 0
+
+            For each point :math:`z_i`, we get:
+
+            .. math::
+
+               c|z_i|^2 + \alpha z_i + \bar{\alpha}\bar{z_i} + d = 0, \qquad i=0,1,2.
+
+            With three points, we have three equations with four unknowns
+            (:math:`c`, :math:`\alpha = \alpha_1+i*\alpha_2`, and :math:`d`).
+
+            We know already that the case :math:`c=0` represents a line, so when the three points
+            are collinear we can set c=0 and solve for the rest. Otherwise since the equation
+            is overdetermined, we can set :math:`c=1` and solve for the circle case.
+
+            To determine which value of :math:`c` to use, we check if the points are collinear:
+
+            * When the points are collinear:
+
+              * Set :math:`c=0` (representing a line)
+              * Calculate :math:`\alpha = i(z_1 - z_0)` perpendicular to the line direction
+              * Solve for :math:`d = -2\text{Re}(\alpha z_0)`
+
+            * When the points are not collinear:
+
+              * Set :math:`c=1` (representing a circle)
+              * Solve a system of linear equations for the remaining parameters
+
+            To check collinearity, we compute:
+
+            .. math::
+
+               \text{Im}\left(\frac{z_2 - z_0}{z_1 - z_0}\right) = 0
+
+            When the points are not collinear, we set :math:`c=1` and solve a system of linear
+            equations.
+            We can subtract the equation for :math:`z_0` from the equations for
+            :math:`z_1` and :math:`z_2`:
+
+            .. math::
+
+               c(|z_1|^2 - |z_0|^2) + \alpha(z_1 - z_0) + \bar{\alpha}(\bar{z_1}
+               - \bar{z_0}) &= 0 \\
+               c(|z_2|^2 - |z_0|^2) + \alpha(z_2 - z_0) + \bar{\alpha}(\bar{z_2}
+               - \bar{z_0}) &= 0
+
+            With :math:`c=1`, :math:`\Delta_1 = z_1 - z_0`, :math:`\Delta_2 = z_2 - z_0`,
+            :math:`S_1 = |z_1|^2 - |z_0|^2`, and :math:`S_2 = |z_2|^2 - |z_0|^2`, we get:
+
+            .. math::
+
+               S_1 + \alpha\Delta_1 + \bar{\alpha}\bar{\Delta_1} &= 0 \\
+               S_2 + \alpha\Delta_2 + \bar{\alpha}\bar{\Delta_2} &= 0
+
+            This can be rewritten as:
+
+            .. math::
+
+               S_1 + 2\text{Re}(\alpha\Delta_1) &= 0 \\
+               S_2 + 2\text{Re}(\alpha\Delta_2) &= 0
+
+            Leading to:
+
+            .. math::
+
+               \text{Re}(\alpha\Delta_1) &= -\frac{S_1}{2} \\
+               \text{Re}(\alpha\Delta_2) &= -\frac{S_2}{2}
+
+            Expanding :math:`\alpha = a + bi` and :math:`\Delta_j = x_j + y_j i`, we get:
+
+            .. math::
+
+               a x_1 - b y_1 &= -\frac{S_1}{2} \\
+               a x_2 - b y_2 &= -\frac{S_2}{2}
+
+            This 2×2 system is solved for :math:`a` and :math:`b` to find :math:`\alpha`.
+            Finally, we compute :math:`d` using the original equation and the value of :math:`z_0`.
+
         Algorithm:
             1. Check if the points are collinear by testing
-              :math:`\text{Im}((z_2 - z_0)/(z_1 - z_0)) = 0`
+               :math:`\text{Im}((z_2 - z_0)/(z_1 - z_0)) = 0`
+
             2. If collinear:
-               - Set :math:`c = 0`
-               - Calculate :math:`\alpha = i(z_1 - z_0)`
-               - Calculate :math:`d = -2\text{Re}(\alpha z_0)`
+
+               * Set :math:`c = 0`
+               * Calculate :math:`\alpha = i(z_1 - z_0)`
+               * Calculate :math:`d = -2\text{Re}(\alpha z_0)`
+
             3. If not collinear:
-               - Set :math:`c = 1`
-               - Calculate :math:`\Delta_1 = z_1 - z_0, \Delta_2 = z_2 - z_0`
-               - Calculate :math:`S_1 = |z_1|^2 - |z_0|^2, S_2 = |z_2|^2 - |z_0|^2`
-               - Calculate :math:`\alpha` using the formula derived from the system of equations
-               - Calculate :math:`d = -(|z_0|^2 + 2\text{Re}(\alpha z_0))`
+
+               * Set :math:`c = 1`
+               * Calculate :math:`\Delta_1 = z_1 - z_0, \Delta_2 = z_2 - z_0`
+               * Calculate :math:`S_1 = |z_1|^2 - |z_0|^2, S_2 = |z_2|^2 - |z_0|^2`
+               * Calculate :math:`\alpha` by solving the linear system:
+
+                 .. math::
+
+                    \begin{pmatrix}
+                    \text{Re}(\Delta_1) & -\text{Im}(\Delta_1) \\
+                    \text{Re}(\Delta_2) & -\text{Im}(\Delta_2)
+                    \end{pmatrix}
+                    \begin{pmatrix}
+                    \text{Re}(\alpha) \\
+                    \text{Im}(\alpha)
+                    \end{pmatrix} =
+                    \begin{pmatrix}
+                    -S_1/2 \\
+                    -S_2/2
+                    \end{pmatrix}
+
+                 The solution is:
+
+                 .. math::
+
+                    \begin{pmatrix}
+                    \text{Re}(\alpha) \\
+                    \text{Im}(\alpha)
+                    \end{pmatrix} =
+                    \begin{pmatrix}
+                    \text{Re}(\Delta_1) & -\text{Im}(\Delta_1) \\
+                    \text{Re}(\Delta_2) & -\text{Im}(\Delta_2)
+                    \end{pmatrix}^{-1}
+                    \begin{pmatrix}
+                    -S_1/2 \\
+                    -S_2/2
+                    \end{pmatrix}
+
+               * Calculate :math:`d = -(|z_0|^2 + 2\text{Re}(\alpha z_0))`
         """
         # Convert inputs to complex numbers
         # Handle tuples as (real, imag) coordinates
