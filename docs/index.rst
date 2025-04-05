@@ -8,7 +8,7 @@ Welcome to Cline's documentation!
    introduction
    installation
    usage
-   api
+   reference
    examples
 
 
