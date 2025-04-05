@@ -21,11 +21,8 @@ where:
 
 This unified representation allows for elegant manipulation of both circles and lines in the complex plane.
 
-## Installation
+## Installation (not yet published as a package)
 
-```bash
-pip install cline
-```
 
 
 ## Features
