@@ -4,6 +4,10 @@ A Python library for representing circles and lines in the complex plane using t
 
 The inspiration for this package comes from open source book [Geometry with an Introduction to Cosmic Topology](https://mphitchman.com/geometry/preface.html) by Michael P. Hitchman is a fascinating introduction to non-Euclidean geometries following the Erlangen program. The approach in the book relies heavily on Möbius transformations and their effects on _clines_.
 
+## Documentation
+
+Full documentation is available at: [https://velikod.github.io/mathcline](https://velikod.github.io/mathcline)
+
 ## Overview
 
 A cline is a circle or line that can be represented by the equation:
@@ -46,9 +50,6 @@ This unified representation allows for elegant manipulation of both circles and 
 - NumPy
 - Matplotlib
 
-## Documentation
-
-Full documentation is available at: [https://velikod.github.io/mathcline](https://velikod.github.io/mathcline)
 
 ## License
 
