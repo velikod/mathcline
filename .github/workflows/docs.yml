@@ -35,13 +35,15 @@ jobs:
         shell: bash -l {0}
         run: |
           conda install sphinx sphinx-rtd-theme -y
-          # Install the package in development mode
-          pip install -e .
+          # Make sure cline.py is importable
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
 
       - name: Build docs
         shell: bash -l {0}
         run: |
           conda activate mathenv
+          # Add current directory to Python path
+          export PYTHONPATH=$PYTHONPATH:$(pwd)
           cd docs
           make html
 
