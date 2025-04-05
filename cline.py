@@ -2,14 +2,17 @@ r"""
 Cline class for representing circles and lines in the complex plane.
 
 A cline is a circle or line that can be represented by the equation:
-cz\bar{z} + alpha*z + \bar{alpha}*\bar{z} + d = 0
+
+.. math::
+
+   cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0
 
 where:
 - c and d are real numbers
 - alpha is a complex number
-- It's a circle if |alpha|^2 > c*d and c ≠ 0
-- It's a line if c = 0
-- It's a point if |alpha|^2 = c*d and c ≠ 0
+- It's a circle if :math:`|\alpha|^2 > c \cdot d` and :math:`c \neq 0`
+- It's a line if :math:`c = 0`
+- It's a point if :math:`|\alpha|^2 = c \cdot d` and :math:`c \neq 0`
 """
 
 import matplotlib.pyplot as plt
@@ -20,7 +23,10 @@ class Cline:
     r"""Class representing a circle or line in the complex plane using the general equation.
 
     The equation is:
-    cz\bar{z} + alpha*z + \bar{alpha}*\bar{z} + d = 0
+
+    .. math::
+
+       cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0
 
     where c and d are real numbers and alpha is complex.
     """
@@ -29,7 +35,7 @@ class Cline:
         r"""Initialize a cline with its equation parameters.
 
         Args:
-            c (float): Real coefficient of z\bar{z}
+            c (float): Real coefficient of :math:`z\bar{z}`
             alpha (complex): Complex coefficient of z
             d (float): Real constant term
         """
@@ -153,17 +159,18 @@ class Cline:
             Cline: A cline passing through the three points
 
         Algorithm:
-            1. Check if the points are collinear by testing Im((z₂ - z₀)/(z₁ - z₀)) = 0
+            1. Check if the points are collinear by testing
+              :math:`\text{Im}((z_2 - z_0)/(z_1 - z_0)) = 0`
             2. If collinear:
-               - Set c = 0
-               - Calculate α = i(z₁ - z₀)
-               - Calculate d = -2Re(αz₀)
+               - Set :math:`c = 0`
+               - Calculate :math:`\alpha = i(z_1 - z_0)`
+               - Calculate :math:`d = -2\text{Re}(\alpha z_0)`
             3. If not collinear:
-               - Set c = 1
-               - Calculate Δ₁ = z₁ - z₀, Δ₂ = z₂ - z₀
-               - Calculate S₁ = |z₁|² - |z₀|², S₂ = |z₂|² - |z₀|²
-               - Calculate α using the formula derived from the system of equations
-               - Calculate d = -(|z₀|² + 2Re(αz₀))
+               - Set :math:`c = 1`
+               - Calculate :math:`\Delta_1 = z_1 - z_0, \Delta_2 = z_2 - z_0`
+               - Calculate :math:`S_1 = |z_1|^2 - |z_0|^2, S_2 = |z_2|^2 - |z_0|^2`
+               - Calculate :math:`\alpha` using the formula derived from the system of equations
+               - Calculate :math:`d = -(|z_0|^2 + 2\text{Re}(\alpha z_0))`
         """
         # Convert inputs to complex numbers
         # Handle tuples as (real, imag) coordinates
@@ -266,9 +273,9 @@ class Cline:
         Returns:
             Cline: A cline representing the line through z0 and z1
 
-        For a line, we set c = 0, and the parameters are calculated as:
-            - alpha = i*(z1 - z0) (perpendicular to the line direction)
-            - d = -2*Re(alpha*z0)
+        For a line, we set :math:`c = 0`, and the parameters are calculated as:
+            - :math:`\alpha = i \cdot (z_1 - z_0)` (perpendicular to the line direction)
+            - :math:`d = -2 \cdot \text{Re}(\alpha \cdot z_0)`
         """
         # Convert inputs to complex numbers
         # Handle tuples as (real, imag) coordinates
@@ -312,9 +319,9 @@ class Cline:
         Returns:
             Cline: A cline representing the circle with given center and radius
 
-        For a circle, we set c = 1, and the parameters are calculated as:
-            - alpha = -center
-            - d = |center|^2 - radius^2
+        For a circle, we set :math:`c = 1`, and the parameters are calculated as:
+            - :math:`\alpha = -\text{center}`
+            - :math:`d = |\text{center}|^2 - \text{radius}^2`
         """
         # Convert center to complex number
         if isinstance(center, tuple):
