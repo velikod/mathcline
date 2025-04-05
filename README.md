@@ -1,6 +1,8 @@
 # Cline
 
-A Python library for representing circles and lines in the complex plane using the general cline equation.
+A Python library for representing circles and lines in the complex plane using the general _cline_ equation.
+
+The inspiration for this package comes from open source book [Geometry with an Introduction to Cosmic Topology](https://mphitchman.com/geometry/preface.html) by Michael P. Hitchman is a fascinating introduction to non-Euclidean geometries following the Erlangen program. The approach in the book relies heavily on Möbius transformations and their effects on _clines_.
 
 ## Overview
 
@@ -25,119 +27,6 @@ This unified representation allows for elegant manipulation of both circles and 
 pip install cline
 ```
 
-## Usage
-
-### Creating Clines from Equation Parameters
-
-```python
-from cline import Cline
-
-# Create a cline directly using the equation parameters
-# c=1, d=1, alpha=2+1j
-custom_cline = Cline(c=1.0, alpha=2+1j, d=1.0)
-print(custom_cline)
-
-# Plot the cline - automatic window calculation based on geometry
-import matplotlib.pyplot as plt
-fig, ax = plt.subplots(figsize=(8, 8))
-custom_cline.plot(ax=ax, color='blue', label='Circle')
-plt.legend()
-plt.show()
-```
-
-### Creating Circles
-
-```python
-from cline import Cline
-import matplotlib.pyplot as plt
-
-# Create a circle with center at 1+2j and radius 3
-circle = Cline.from_circle(center=1+2j, radius=3)
-
-# Access circle properties
-print(f"Center: {circle.center}, Radius: {circle.radius}")
-```
-
-### Creating Lines
-
-```python
-# Create a line passing through two points
-line = Cline.from_line(z0=0, z1=1+1j)
-
-# Access line properties
-print(f"Normal vector: {line.normal_vector}")
-print(f"Direction vector: {line.direction_vector}")
-print(f"Distance from origin: {line.distance_from_origin}")
-```
-
-### Creating Clines from Three Points
-
-```python
-# Create a cline passing through three points
-# (This will be a circle if the points are not collinear)
-cline = Cline.from_three_points(z0=0, z1=1, z2=1j)
-```
-
-### Visualizing Clines
-
-```python
-# Plot multiple clines on the same figure
-fig, ax = plt.subplots(figsize=(8, 8))
-
-# Plot circle and line - limits automatically calculated
-circle.plot(ax=ax, color='blue', label='Circle')
-line.plot(ax=ax, color='red', label='Line')
-
-# Add legend and show
-plt.legend()
-plt.show()
-```
-
-## Mathematical Formulation
-
-### Circle Representation
-
-When $c \neq 0$ and $|\alpha|^2 > c \cdot d$, the equation represents a circle with:
-
-```math
-\text{center} = -\frac{\alpha}{c}
-```
-
-```math
-\text{radius} = \frac{\sqrt{|\alpha|^2 - cd}}{|c|}
-```
-
-### Line Representation
-
-When $c = 0$, the equation becomes:
-
-```math
-\alpha z + \bar{\alpha}\bar{z} + d = 0
-```
-
-which can be rewritten in Cartesian form as:
-
-```math
-a\cdot x - b \cdot y + \frac{d}{2} = 0
-```
-
-where $\alpha = a + bi$, and:
-- Normal vector: $\alpha$
-- Direction vector: $b - ia$ (perpendicular to normal)
-- Distance from origin: $\frac{|d|}{2|\alpha|}$
-
-### From Three Points
-
-Given three points $z_0$, $z_1$, and $z_2$ in the complex plane, we can construct a cline:
-
-1. If the points are collinear:
-   - Set $c = 0$ (representing a line)
-   - Calculate $\alpha = i(z_1 - z_0)$ perpendicular to the line direction
-   - Solve for $d = -2\text{Re}(\alpha z_0)$
-
-2. If the points are not collinear:
-   - Set $c = 1$ (representing a circle)
-   - Solve a linear system of equations for $\alpha$ and $d$
 
 ## Features
 
