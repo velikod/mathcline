@@ -31,10 +31,9 @@ jobs:
           # Activate the environment
           conda activate mathenv
 
-      - name: Install additional dependencies
+      - name: Set Python path
         shell: bash -l {0}
         run: |
-          conda install sphinx sphinx-rtd-theme -y
           # Make sure cline.py is importable
           export PYTHONPATH=$PYTHONPATH:$(pwd)
 

@@ -15,8 +15,8 @@ conda activate mathenv
 
 # Test the installation
 echo "Testing installation..."
-python -c "import numpy; import pandas; import sklearn; import matplotlib; import sympy; print('Basic packages working!')"
-python -c "try: import manim; print('Manim is working!'); except Exception as e: print(f'Manim error: {e}')"
+python -c "import numpy; import matplotlib; import sympy; print('Basic packages working!')"
+python -c "import sphinx; import sphinx_rtd_theme; print('Documentation packages working!')"
 
 echo ""
 echo "Setup complete!"
