@@ -20,6 +20,7 @@ jobs:
           miniconda-version: "latest"
           auto-activate-base: true
           python-version: '3.10'
+          activate-environment: mathenv
 
       - name: Setup conda environment
         shell: bash -l {0}
@@ -28,23 +29,33 @@ jobs:
           sed -i 's/conda env remove -n mathenv -y/# Skipping env removal in CI/' setup_conda_env.sh
           # Run the setup script
           bash setup_conda_env.sh
-          # Activate the environment
-          conda activate mathenv
-
+          
       - name: Set Python path
         shell: bash -l {0}
         run: |
           # Make sure cline.py is importable
           export PYTHONPATH=$PYTHONPATH:$(pwd)
+          # Verify sphinx is installed and accessible
+          which sphinx-build || echo "sphinx-build not found"
+          echo "PATH=$PATH"
 
       - name: Build docs
         shell: bash -l {0}
         run: |
-          conda activate mathenv
           # Add current directory to Python path
           export PYTHONPATH=$PYTHONPATH:$(pwd)
           cd docs
+          # Verify that sphinx-build is in path
+          which sphinx-build
+          # Build docs
           make html
+          # If sphinx-build isn't found, try finding it directly
+          if [ $? -ne 0 ]; then
+            echo "Trying alternative sphinx-build path"
+            export PATH=$CONDA_PREFIX/bin:$PATH
+            which sphinx-build
+            make html
+          fi
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
