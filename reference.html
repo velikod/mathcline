@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reference &mdash; Cline 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="examples.html" />
+    <link rel="prev" title="Usage" href="usage.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Cline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#cline-class">Cline Class</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/reference.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="reference">
+<h1>Reference<a class="headerlink" href="#reference" title="Link to this heading"></a></h1>
+<section id="cline-class">
+<h2>Cline Class<a class="headerlink" href="#cline-class" title="Link to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cline.</span></span><span class="sig-name descname"><span class="pre">Cline</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Class representing a circle or line in the complex plane using the general equation.</p>
+<p>The equation is:</p>
+<div class="math notranslate nohighlight">
+\[cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0\]</div>
+<p>where c and d are real numbers and alpha is complex.</p>
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">c</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0j</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">d</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Initialize a cline with its equation parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<em>float</em>) – Real coefficient of <span class="math notranslate nohighlight">\(z\bar{z}\)</span></p></li>
+<li><p><strong>alpha</strong> (<em>complex</em>) – Complex coefficient of z</p></li>
+<li><p><strong>d</strong> (<em>float</em>) – Real constant term</p></li>
+</ul>
+</dd>
+</dl>
+<dl>
+<dt>Mathematical Formulation:</dt><dd><p>A cline is determined by the general equation:</p>
+<div class="math notranslate nohighlight">
+\[cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0\]</div>
+<p>where:</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(d\)</span> are real numbers</p></li>
+<li><p><span class="math notranslate nohighlight">\(\alpha\)</span> is a complex number</p></li>
+</ul>
+<p>The discriminant of the cline is defined as:</p>
+<div class="math notranslate nohighlight">
+\[\Delta = |\alpha|^2 - c \cdot d\]</div>
+<p>Based on the parameters, the cline represents:</p>
+<ul class="simple">
+<li><p>A circle if <span class="math notranslate nohighlight">\(\Delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(c \neq 0\)</span></p></li>
+<li><p>A point if <span class="math notranslate nohighlight">\(\Delta = 0\)</span> and <span class="math notranslate nohighlight">\(c \neq 0\)</span></p></li>
+<li><p>A line if <span class="math notranslate nohighlight">\(c = 0\)</span></p></li>
+<li><p>An invalid geometric object (no solutions) if <span class="math notranslate nohighlight">\(\Delta &lt; 0\)</span> and <span class="math notranslate nohighlight">\(c \neq 0\)</span></p></li>
+</ul>
+<p>For a circle (<span class="math notranslate nohighlight">\(\Delta &gt; 0\)</span> and <span class="math notranslate nohighlight">\(c \neq 0\)</span>):</p>
+<ul class="simple">
+<li><p>Center: <span class="math notranslate nohighlight">\(z_0 = -\frac{\alpha}{c} = -\frac{\text{Re}(\alpha) + i\cdot\text{Im}(\alpha)}{c}\)</span></p></li>
+<li><p>Radius: <span class="math notranslate nohighlight">\(r = \frac{\sqrt{\Delta}}{|c|} = \frac{\sqrt{|\alpha|^2 - c \cdot d}}{|c|}\)</span></p></li>
+</ul>
+<p>For a point (<span class="math notranslate nohighlight">\(\Delta = 0\)</span> and <span class="math notranslate nohighlight">\(c \neq 0\)</span>):</p>
+<ul class="simple">
+<li><p>Point location: <span class="math notranslate nohighlight">\(z_0 = -\frac{\alpha}{c}\)</span></p></li>
+</ul>
+<p>For a line (<span class="math notranslate nohighlight">\(c = 0\)</span>):</p>
+<ul class="simple">
+<li><p>Normal vector: <span class="math notranslate nohighlight">\(\alpha = a + bi\)</span></p></li>
+<li><p>Direction vector: <span class="math notranslate nohighlight">\(v = b - ai\)</span> (perpendicular to normal)</p></li>
+<li><p>Cartesian form: <span class="math notranslate nohighlight">\(ax - by + \frac{d}{2} = 0\)</span></p></li>
+<li><p>Distance from origin: <span class="math notranslate nohighlight">\(\frac{|d|}{2|\alpha|}\)</span></p></li>
+<li><p>Parametric form: <span class="math notranslate nohighlight">\(z(t) = z_0 + t \cdot v\)</span> where <span class="math notranslate nohighlight">\(z_0\)</span> is a point on the line</p></li>
+</ul>
+</dd>
+<dt>Algorithm:</dt><dd><ol class="arabic simple">
+<li><p>Calculate the discriminant <span class="math notranslate nohighlight">\(\Delta = |\alpha|^2 - c \cdot d\)</span></p></li>
+<li><p>Determine the type of cline:
+* If <span class="math notranslate nohighlight">\(|c| &lt; \epsilon\)</span> (near zero): Line
+* If <span class="math notranslate nohighlight">\(|c| \geq \epsilon\)</span> and <span class="math notranslate nohighlight">\(\Delta &gt; \epsilon\)</span>: Circle
+* If <span class="math notranslate nohighlight">\(|c| \geq \epsilon\)</span> and <span class="math notranslate nohighlight">\(|\Delta| &lt; \epsilon\)</span>: Point
+* If <span class="math notranslate nohighlight">\(|c| \geq \epsilon\)</span> and <span class="math notranslate nohighlight">\(\Delta &lt; -\epsilon\)</span>: Invalid object</p></li>
+<li><p>For a circle, calculate:
+* Center: <span class="math notranslate nohighlight">\(z_0 = -\frac{\text{Re}(\alpha)}{c} - i\frac{\text{Im}(\alpha)}{c}\)</span>
+* Radius: <span class="math notranslate nohighlight">\(r = \frac{\sqrt{\Delta}}{|c|}\)</span></p></li>
+<li><p>For a point, calculate:
+* Point location: same as circle center</p></li>
+<li><p>For a line, calculate:
+* Normal vector: <span class="math notranslate nohighlight">\(\alpha\)</span>
+* Direction vector: <span class="math notranslate nohighlight">\(v = \text{Im}(\alpha) - i \cdot \text{Re}(\alpha)\)</span>
+* Distance from origin: <span class="math notranslate nohighlight">\(\frac{|d|}{2|\alpha|}\)</span>
+* A point on the line by setting either x=0 or y=0 in the Cartesian form</p></li>
+</ol>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__repr__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.__repr__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Return a string representation for debugging.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">__str__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.__str__"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Return a string representation of the cline.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_circle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">center</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.from_circle"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct a cline representing a circle with specified center and radius.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>center</strong> (<em>complex</em><em> or </em><em>tuple</em>) – Center of the circle,</p></li>
+<li><p><strong>tuple</strong> (<em>either complex number or</em>)</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – Radius of the circle (must be positive)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A cline representing the circle with given center and radius</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cline</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>For a circle, we set <span class="math notranslate nohighlight">\(c = 1\)</span>, and the parameters are calculated as:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha = -\text{center}\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(d = |\text{center}|^2 - \text{radius}^2\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_line</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.from_line"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct a cline representing a line through two points.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z0</strong> (<em>complex</em><em> or </em><em>tuple</em>) – First point, either complex number or tuple (real, imag)</p></li>
+<li><p><strong>z1</strong> (<em>complex</em><em> or </em><em>tuple</em>) – Second point, either complex number or tuple (real, imag)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A cline representing the line through z0 and z1</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cline</p>
+</dd>
+</dl>
+<dl class="simple">
+<dt>For a line, we set <span class="math notranslate nohighlight">\(c = 0\)</span>, and the parameters are calculated as:</dt><dd><ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(\alpha = i \cdot (z_1 - z_0)\)</span> (perpendicular to the line direction)</p></li>
+<li><p><span class="math notranslate nohighlight">\(d = -2 \cdot \text{Re}(\alpha \cdot z_0)\)</span></p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_three_points</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.from_three_points"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Construct a cline from three points in the complex plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>z0</strong> (<em>complex</em><em> or </em><em>tuple</em>) – First point, either complex number or tuple (real, imag)</p></li>
+<li><p><strong>z1</strong> (<em>complex</em><em> or </em><em>tuple</em>) – Second point, either complex number or tuple (real, imag)</p></li>
+<li><p><strong>z2</strong> (<em>complex</em><em> or </em><em>tuple</em>) – Third point, either complex number or tuple (real, imag)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A cline passing through the three points</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Cline</p>
+</dd>
+</dl>
+<dl>
+<dt>Mathematical Derivation:</dt><dd><p>Substituting three points into the general cline equation:</p>
+<div class="math notranslate nohighlight">
+\[c|z|^2 + \alpha z + \bar{\alpha}\bar{z} + d = 0\]</div>
+<p>For each point <span class="math notranslate nohighlight">\(z_i\)</span>, we get:</p>
+<div class="math notranslate nohighlight">
+\[c|z_i|^2 + \alpha z_i + \bar{\alpha}\bar{z_i} + d = 0, \qquad i=0,1,2.\]</div>
+<p>With three points, we have three equations with four unknowns
+(<span class="math notranslate nohighlight">\(c\)</span>, <span class="math notranslate nohighlight">\(\alpha = \alpha_1+i*\alpha_2\)</span>, and <span class="math notranslate nohighlight">\(d\)</span>).</p>
+<p>We know already that the case <span class="math notranslate nohighlight">\(c=0\)</span> represents a line, so when the three points
+are collinear we can set c=0 and solve for the rest. Otherwise since the equation
+is overdetermined, we can set <span class="math notranslate nohighlight">\(c=1\)</span> and solve for the circle case.</p>
+<p>To determine which value of <span class="math notranslate nohighlight">\(c\)</span> to use, we check if the points are collinear:</p>
+<ul class="simple">
+<li><p>When the points are collinear:</p>
+<ul>
+<li><p>Set <span class="math notranslate nohighlight">\(c=0\)</span> (representing a line)</p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(\alpha = i(z_1 - z_0)\)</span> perpendicular to the line direction</p></li>
+<li><p>Solve for <span class="math notranslate nohighlight">\(d = -2\text{Re}(\alpha z_0)\)</span></p></li>
+</ul>
+</li>
+<li><p>When the points are not collinear:</p>
+<ul>
+<li><p>Set <span class="math notranslate nohighlight">\(c=1\)</span> (representing a circle)</p></li>
+<li><p>Solve a system of linear equations for the remaining parameters</p></li>
+</ul>
+</li>
+</ul>
+<p>To check collinearity, we compute:</p>
+<div class="math notranslate nohighlight">
+\[\text{Im}\left(\frac{z_2 - z_0}{z_1 - z_0}\right) = 0\]</div>
+<p>When the points are not collinear, we set <span class="math notranslate nohighlight">\(c=1\)</span> and solve a system of linear
+equations.
+We can subtract the equation for <span class="math notranslate nohighlight">\(z_0\)</span> from the equations for
+<span class="math notranslate nohighlight">\(z_1\)</span> and <span class="math notranslate nohighlight">\(z_2\)</span>:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}c(|z_1|^2 - |z_0|^2) + \alpha(z_1 - z_0) + \bar{\alpha}(\bar{z_1}
+- \bar{z_0}) &amp;= 0 \\
+c(|z_2|^2 - |z_0|^2) + \alpha(z_2 - z_0) + \bar{\alpha}(\bar{z_2}
+- \bar{z_0}) &amp;= 0\end{split}\]</div>
+<p>With <span class="math notranslate nohighlight">\(c=1\)</span>, <span class="math notranslate nohighlight">\(\Delta_1 = z_1 - z_0\)</span>, <span class="math notranslate nohighlight">\(\Delta_2 = z_2 - z_0\)</span>,
+<span class="math notranslate nohighlight">\(S_1 = |z_1|^2 - |z_0|^2\)</span>, and <span class="math notranslate nohighlight">\(S_2 = |z_2|^2 - |z_0|^2\)</span>, we get:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S_1 + \alpha\Delta_1 + \bar{\alpha}\bar{\Delta_1} &amp;= 0 \\
+S_2 + \alpha\Delta_2 + \bar{\alpha}\bar{\Delta_2} &amp;= 0\end{split}\]</div>
+<p>This can be rewritten as:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}S_1 + 2\text{Re}(\alpha\Delta_1) &amp;= 0 \\
+S_2 + 2\text{Re}(\alpha\Delta_2) &amp;= 0\end{split}\]</div>
+<p>Leading to:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\text{Re}(\alpha\Delta_1) &amp;= -\frac{S_1}{2} \\
+\text{Re}(\alpha\Delta_2) &amp;= -\frac{S_2}{2}\end{split}\]</div>
+<p>Expanding <span class="math notranslate nohighlight">\(\alpha = a + bi\)</span> and <span class="math notranslate nohighlight">\(\Delta_j = x_j + y_j i\)</span>, we get:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}a x_1 - b y_1 &amp;= -\frac{S_1}{2} \\
+a x_2 - b y_2 &amp;= -\frac{S_2}{2}\end{split}\]</div>
+<p>This 2×2 system is solved for <span class="math notranslate nohighlight">\(a\)</span> and <span class="math notranslate nohighlight">\(b\)</span> to find <span class="math notranslate nohighlight">\(\alpha\)</span>.
+Finally, we compute <span class="math notranslate nohighlight">\(d\)</span> using the original equation and the value of <span class="math notranslate nohighlight">\(z_0\)</span>.</p>
+</dd>
+<dt>Algorithm:</dt><dd><ol class="arabic">
+<li><p>Check if the points are collinear by testing
+<span class="math notranslate nohighlight">\(\text{Im}((z_2 - z_0)/(z_1 - z_0)) = 0\)</span></p></li>
+<li><p>If collinear:</p>
+<ul class="simple">
+<li><p>Set <span class="math notranslate nohighlight">\(c = 0\)</span></p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(\alpha = i(z_1 - z_0)\)</span></p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(d = -2\text{Re}(\alpha z_0)\)</span></p></li>
+</ul>
+</li>
+<li><p>If not collinear:</p>
+<ul>
+<li><p>Set <span class="math notranslate nohighlight">\(c = 1\)</span></p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(\Delta_1 = z_1 - z_0, \Delta_2 = z_2 - z_0\)</span></p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(S_1 = |z_1|^2 - |z_0|^2, S_2 = |z_2|^2 - |z_0|^2\)</span></p></li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(\alpha\)</span> by solving the linear system:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+\text{Re}(\Delta_1) &amp; -\text{Im}(\Delta_1) \\
+\text{Re}(\Delta_2) &amp; -\text{Im}(\Delta_2)
+\end{pmatrix}
+\begin{pmatrix}
+\text{Re}(\alpha) \\
+\text{Im}(\alpha)
+\end{pmatrix} =
+\begin{pmatrix}
+-S_1/2 \\
+-S_2/2
+\end{pmatrix}\end{split}\]</div>
+<p>The solution is:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}\begin{pmatrix}
+\text{Re}(\alpha) \\
+\text{Im}(\alpha)
+\end{pmatrix} =
+\begin{pmatrix}
+\text{Re}(\Delta_1) &amp; -\text{Im}(\Delta_1) \\
+\text{Re}(\Delta_2) &amp; -\text{Im}(\Delta_2)
+\end{pmatrix}^{-1}
+\begin{pmatrix}
+-S_1/2 \\
+-S_2/2
+\end{pmatrix}\end{split}\]</div>
+</li>
+<li><p>Calculate <span class="math notranslate nohighlight">\(d = -(|z_0|^2 + 2\text{Re}(\alpha z_0))\)</span></p></li>
+</ul>
+</li>
+</ol>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(8,</span> <span class="pre">8)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'blue'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">point_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cline.html#Cline.plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a></dt>
+<dd><p>Plot the cline in the complex plane.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<em>matplotlib.axes.Axes</em><em>, </em><em>optional</em>) – Axes to plot on. If None, a new figure is created.</p></li>
+<li><p><strong>figsize</strong> (<em>tuple</em><em>, </em><em>optional</em>) – Figure size if creating a new figure. Defaults to (8, 8).</p></li>
+<li><p><strong>xlim</strong> (<em>tuple</em><em>, </em><em>optional</em>) – x-axis limits. If None, automatically calculated.</p></li>
+<li><p><strong>ylim</strong> (<em>tuple</em><em>, </em><em>optional</em>) – y-axis limits. If None, automatically calculated.</p></li>
+<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color of the cline. Defaults to ‘blue’.</p></li>
+<li><p><strong>point_color</strong> (<em>str</em><em>, </em><em>optional</em>) – Color of the points. Defaults to ‘red’.</p></li>
+<li><p><strong>label</strong> (<em>str</em><em>, </em><em>optional</em>) – Label for the cline in the legend. Defaults to None.</p></li>
+<li><p><strong>show_points</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to show the points used to create the cline.
+Defaults to True.</p></li>
+<li><p><strong>num_points</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of points to use when plotting a circle.
+Defaults to 100.</p></li>
+<li><p><strong>precision</strong> (<em>int</em><em>, </em><em>optional</em>) – Number of decimal places to round to. Defaults to 4.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments passed to the plot function.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The axes containing the plot.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>matplotlib.axes.Axes</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="usage.html" class="btn btn-neutral float-left" title="Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="examples.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Velko Dontchev.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
