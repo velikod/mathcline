@@ -10,9 +10,12 @@ A cline is a circle or line that can be represented by the equation:
 where:
 - c and d are real numbers
 - alpha is a complex number
+
+Based on the parameters, we have: 
 - It's a circle if :math:`|\alpha|^2 > c \cdot d` and :math:`c \neq 0`
 - It's a line if :math:`c = 0`
 - It's a point if :math:`|\alpha|^2 = c \cdot d` and :math:`c \neq 0`
+- Is not a valid geometric object (no solutions) if $|\alpha|^2 < c \cdot d$ and $c \neq 0$
 """
 
 import matplotlib.pyplot as plt
@@ -38,6 +41,70 @@ class Cline:
             c (float): Real coefficient of :math:`z\bar{z}`
             alpha (complex): Complex coefficient of z
             d (float): Real constant term
+            
+        Mathematical Formulation:
+            A cline is determined by the general equation:
+            
+            .. math::
+            
+               cz\bar{z} + \alpha z + \bar{\alpha}\bar{z} + d = 0
+               
+            where:
+            
+            * :math:`c` and :math:`d` are real numbers
+            * :math:`\alpha` is a complex number
+            
+            The discriminant of the cline is defined as:
+            
+            .. math::
+            
+               \Delta = |\alpha|^2 - c \cdot d
+               
+            Based on the parameters, the cline represents:
+            
+            * A circle if :math:`\Delta > 0` and :math:`c \neq 0`
+            * A point if :math:`\Delta = 0` and :math:`c \neq 0`
+            * A line if :math:`c = 0`
+            * An invalid geometric object (no solutions) if :math:`\Delta < 0` and :math:`c \neq 0`
+            
+            For a circle (:math:`\Delta > 0` and :math:`c \neq 0`):
+            
+            * Center: :math:`z_0 = -\frac{\alpha}{c} = -\frac{\text{Re}(\alpha) + i\cdot\text{Im}(\alpha)}{c}`
+            * Radius: :math:`r = \frac{\sqrt{\Delta}}{|c|} = \frac{\sqrt{|\alpha|^2 - c \cdot d}}{|c|}`
+            
+            For a point (:math:`\Delta = 0` and :math:`c \neq 0`):
+            
+            * Point location: :math:`z_0 = -\frac{\alpha}{c}`
+            
+            For a line (:math:`c = 0`):
+            
+            * Normal vector: :math:`\alpha = a + bi`
+            * Direction vector: :math:`v = b - ai` (perpendicular to normal)
+            * Cartesian form: :math:`ax - by + \frac{d}{2} = 0`
+            * Distance from origin: :math:`\frac{|d|}{2|\alpha|}`
+            * Parametric form: :math:`z(t) = z_0 + t \cdot v` where :math:`z_0` is a point on the line
+            
+        Algorithm:
+            1. Calculate the discriminant :math:`\Delta = |\alpha|^2 - c \cdot d`
+            
+            2. Determine the type of cline:
+               * If :math:`|c| < \epsilon` (near zero): Line
+               * If :math:`|c| \geq \epsilon` and :math:`\Delta > \epsilon`: Circle
+               * If :math:`|c| \geq \epsilon` and :math:`|\Delta| < \epsilon`: Point
+               * If :math:`|c| \geq \epsilon` and :math:`\Delta < -\epsilon`: Invalid object
+               
+            3. For a circle, calculate:
+               * Center: :math:`z_0 = -\frac{\text{Re}(\alpha)}{c} - i\frac{\text{Im}(\alpha)}{c}`
+               * Radius: :math:`r = \frac{\sqrt{\Delta}}{|c|}`
+               
+            4. For a point, calculate:
+               * Point location: same as circle center
+               
+            5. For a line, calculate:
+               * Normal vector: :math:`\alpha`
+               * Direction vector: :math:`v = \text{Im}(\alpha) - i \cdot \text{Re}(\alpha)`
+               * Distance from origin: :math:`\frac{|d|}{2|\alpha|}`
+               * A point on the line by setting either x=0 or y=0 in the Cartesian form
         """
         # Ensure c and d are real
         self.c = float(c)
