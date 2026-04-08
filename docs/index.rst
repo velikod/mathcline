@@ -8,8 +8,8 @@ Welcome to Cline's documentation!
    introduction
    installation
    usage
-   reference
    examples
+   reference
 
 
 Indices and tables
