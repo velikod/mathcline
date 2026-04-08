@@ -65,10 +65,19 @@ venv.bak/
 # Python virtual environment
 mathenv/
 
-# Test files
-test_*.py
-test_*.ipynb
-
 # Specific files to exclude
 symbolic_cline.py
-*manim* 
+
+# Manim build artifacts
+media/
+
+# Temp images/videos from exploration
+apollonius_test.png
+circle_test.png
+grid_inversion_test.png
+cubic_family.png
+parametric_family.png
+two_param_regions.png
+bg_music.mp3
+apollonius_final.mp4
+apollonius_1080p.mp4

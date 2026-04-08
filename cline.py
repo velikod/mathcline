@@ -21,6 +21,50 @@ Based on the parameters, we have:
 import matplotlib.pyplot as plt
 import numpy as np
 
+try:
+    import sympy
+    _HAS_SYMPY = True
+except ImportError:
+    _HAS_SYMPY = False
+
+
+def _is_sympy(x):
+    """Check if x is a sympy expression."""
+    return _HAS_SYMPY and isinstance(x, sympy.Basic)
+
+
+def _conjugate(x):
+    """Conjugate that works for both numeric and sympy types."""
+    if _is_sympy(x):
+        return sympy.conjugate(x)
+    return np.conj(x)
+
+
+def _abs_sq(x):
+    """Compute |x|^2 for both numeric and sympy types."""
+    if _is_sympy(x):
+        return (x * sympy.conjugate(x)).expand()
+    return abs(x) ** 2
+
+
+def _real(x):
+    """Real part for both numeric and sympy types."""
+    if _is_sympy(x):
+        return sympy.re(x)
+    return np.real(x)
+
+
+def _sqrt(x):
+    """Square root for both numeric and sympy types."""
+    if _is_sympy(x):
+        return sympy.sqrt(x)
+    return np.sqrt(x)
+
+
+def _is_infinity(z):
+    """Check if z is the point at infinity (sympy.zoo)."""
+    return _HAS_SYMPY and z is sympy.zoo
+
 
 class Cline:
     r"""Class representing a circle or line in the complex plane using the general equation.
@@ -69,7 +113,7 @@ class Cline:
             
             For a circle (:math:`\Delta > 0` and :math:`c \neq 0`):
             
-            * Center: :math:`z_0 = -\frac{\alpha}{c} = -\frac{\text{Re}(\alpha) + i\cdot\text{Im}(\alpha)}{c}`
+            * Center: :math:`z_0 = -\frac{\bar{\alpha}}{c}`
             * Radius: :math:`r = \frac{\sqrt{\Delta}}{|c|} = \frac{\sqrt{|\alpha|^2 - c \cdot d}}{|c|}`
             
             For a point (:math:`\Delta = 0` and :math:`c \neq 0`):
@@ -94,7 +138,7 @@ class Cline:
                * If :math:`|c| \geq \epsilon` and :math:`\Delta < -\epsilon`: Invalid object
                
             3. For a circle, calculate:
-               * Center: :math:`z_0 = -\frac{\text{Re}(\alpha)}{c} - i\frac{\text{Im}(\alpha)}{c}`
+               * Center: :math:`z_0 = -\frac{\bar{\alpha}}{c}`
                * Radius: :math:`r = \frac{\sqrt{\Delta}}{|c|}`
                
             4. For a point, calculate:
@@ -106,84 +150,112 @@ class Cline:
                * Distance from origin: :math:`\frac{|d|}{2|\alpha|}`
                * A point on the line by setting either x=0 or y=0 in the Cartesian form
         """
-        # Ensure c and d are real
-        self.c = float(c)
-        self.d = float(d)
+        # Detect symbolic mode
+        self._is_exact = any(_is_sympy(x) for x in (c, alpha, d))
 
-        # alpha is complex
-        self.alpha = complex(alpha)
+        if self._is_exact:
+            self.c = sympy.sympify(c)
+            self.d = sympy.sympify(d)
+            self.alpha = sympy.sympify(alpha)
+        else:
+            self.c = float(c)
+            self.d = float(d)
+            self.alpha = complex(alpha)
 
         # Initialize points attribute to None (will be set if created from points)
         self.points = None
 
         # Compute discriminant |alpha|^2 - c*d
-        self.discriminant = abs(self.alpha) ** 2 - self.c * self.d
+        self.discriminant = _abs_sq(self.alpha) - self.c * self.d
 
         # Determine if it's a circle, point, or line
-        if abs(self.c) > 1e-10:  # c ≠ 0
-            if self.discriminant > 1e-10:  # Discriminant > 0
-                self.is_circle = True
-                self.is_point = False
-                self.is_line = False
-            elif abs(self.discriminant) < 1e-10:  # Discriminant ≈ 0
-                self.is_circle = False
-                self.is_point = True
-                self.is_line = False
-            else:  # Discriminant < 0
+        if self._is_exact:
+            c_is_zero = self.c == 0
+            if c_is_zero:
                 self.is_circle = False
                 self.is_point = False
-                self.is_line = False
-        else:  # c = 0
-            self.is_circle = False
-            self.is_point = False
-            self.is_line = True
+                self.is_line = True
+            else:
+                disc_simplified = sympy.simplify(self.discriminant)
+                if disc_simplified.is_positive:
+                    self.is_circle = True
+                    self.is_point = False
+                    self.is_line = False
+                elif disc_simplified.is_zero:
+                    self.is_circle = False
+                    self.is_point = True
+                    self.is_line = False
+                elif disc_simplified.is_negative:
+                    self.is_circle = False
+                    self.is_point = False
+                    self.is_line = False
+                else:
+                    # Cannot determine sign symbolically
+                    self.is_circle = None
+                    self.is_point = None
+                    self.is_line = None
+        else:
+            if abs(self.c) > 1e-10:  # c ≠ 0
+                if self.discriminant > 1e-10:
+                    self.is_circle = True
+                    self.is_point = False
+                    self.is_line = False
+                elif abs(self.discriminant) < 1e-10:
+                    self.is_circle = False
+                    self.is_point = True
+                    self.is_line = False
+                else:
+                    self.is_circle = False
+                    self.is_point = False
+                    self.is_line = False
+            else:
+                self.is_circle = False
+                self.is_point = False
+                self.is_line = True
 
         # Compute center and radius for circles
         if self.is_circle:
-            # Center: z_0 = (-Re(alpha)/c, Im(alpha)/c)
-            real_part = -np.real(self.alpha) / self.c
-            imag_part = np.imag(self.alpha) / self.c
-            self.center = complex(real_part, imag_part)
+            # Center: z_0 = -conj(alpha)/c
+            self.center = -_conjugate(self.alpha) / self.c
 
-            # Radius: r = sqrt((|alpha|^2-cd) / c^2)
-            self.radius = np.sqrt(self.discriminant) / abs(self.c)
+            # Radius: r = sqrt(discriminant) / |c|
+            if self._is_exact:
+                self.radius = _sqrt(self.discriminant) / sympy.Abs(self.c)
+            else:
+                self.radius = np.sqrt(self.discriminant) / abs(self.c)
 
         # Compute point location when discriminant = 0
         if self.is_point:
-            real_part = -np.real(self.alpha) / self.c
-            imag_part = np.imag(self.alpha) / self.c
-            self.point = complex(real_part, imag_part)
+            # Point location: z_0 = -conj(alpha)/c
+            self.point = -_conjugate(self.alpha) / self.c
 
         # Compute line properties when c = 0
         if self.is_line:
-            # Extract real and imaginary parts of alpha
-            self.a = np.real(self.alpha)
-            self.b = np.imag(self.alpha)
-
-            # Normal vector: alpha
-            self.normal_vector = self.alpha
-
-            # Direction vector: v = b - ia (perpendicular to alpha)
-            self.direction_vector = complex(self.b, -self.a)
-
-            # Distance from origin: |d|/(2|alpha|)
-            if abs(self.alpha) > 1e-10:
-                self.distance_from_origin = abs(self.d) / (2 * abs(self.alpha))
+            if self._is_exact:
+                self.a = sympy.re(self.alpha)
+                self.b = sympy.im(self.alpha)
+                self.normal_vector = self.alpha
+                self.direction_vector = self.b - sympy.I * self.a
             else:
-                self.distance_from_origin = float("inf")
+                self.a = np.real(self.alpha)
+                self.b = np.imag(self.alpha)
+                self.normal_vector = self.alpha
+                self.direction_vector = complex(self.b, -self.a)
 
-            # Find a point on the line for parametric form
-            # For the equation ax - by + d/2 = 0
-            if abs(self.a) > abs(self.b):
-                # If |a| > |b|, set y = 0 and solve for x
-                x = -self.d / (2 * self.a)
-                y = 0
-            else:
-                # Otherwise, set x = 0 and solve for y
-                x = 0
-                y = self.d / (2 * self.b)
+                # Distance from origin: |d|/(2|alpha|)
+                if abs(self.alpha) > 1e-10:
+                    self.distance_from_origin = abs(self.d) / (2 * abs(self.alpha))
+                else:
+                    self.distance_from_origin = float("inf")
 
-            self.point_on_line = complex(x, y)
+                # Find a point on the line for parametric form
+                if abs(self.a) > abs(self.b):
+                    x = -self.d / (2 * self.a)
+                    y = 0
+                else:
+                    x = 0
+                    y = self.d / (2 * self.b)
+                self.point_on_line = complex(x, y)
 
     def _format_complex(self, z, precision=4):
         """Format a complex number with specified precision."""
@@ -359,6 +431,32 @@ class Cline:
 
                * Calculate :math:`d = -(|z_0|^2 + 2\text{Re}(\alpha z_0))`
         """
+        # Handle infinity: a cline through ∞ is a line through the other two
+        inf_flags = [_is_infinity(z) for z in (z0, z1, z2)]
+        if sum(inf_flags) >= 2:
+            raise ValueError("At most one point can be at infinity")
+        if inf_flags[0]:
+            cline = cls.from_line(z1, z2)
+            cline.points = [z0, z1, z2]
+            return cline
+        if inf_flags[1]:
+            cline = cls.from_line(z0, z2)
+            cline.points = [z0, z1, z2]
+            return cline
+        if inf_flags[2]:
+            cline = cls.from_line(z0, z1)
+            cline.points = [z0, z1, z2]
+            return cline
+
+        # Detect symbolic mode
+        exact = any(_is_sympy(x) for x in (z0, z1, z2))
+
+        if exact:
+            z0 = sympy.sympify(z0)
+            z1 = sympy.sympify(z1)
+            z2 = sympy.sympify(z2)
+            return cls._from_three_points_exact(z0, z1, z2)
+
         # Convert inputs to complex numbers
         # Handle tuples as (real, imag) coordinates
         if isinstance(z0, tuple):
@@ -386,7 +484,7 @@ class Cline:
             else:
                 # z0 = z1 ≠ z2, so we have a line through z0 and z2
                 delta = z2 - z0
-                alpha = 1j * delta  # Perpendicular to the direction
+                alpha = 1j * np.conj(delta)  # Perpendicular to the direction
                 d = -2 * np.real(alpha * z0)
                 cline = cls(c=0.0, alpha=alpha, d=d)
                 cline.points = [z0, z1, z2]  # Store the points
@@ -398,8 +496,8 @@ class Cline:
             # Set c = 0 (line)
             c = 0.0
 
-            # Calculate α = i(z₁ - z₀)
-            alpha = 1j * (z1 - z0)
+            # Calculate α = i*conj(z₁ - z₀)
+            alpha = 1j * np.conj(z1 - z0)
 
             # Calculate d = -2Re(αz₀)
             d = -2 * np.real(alpha * z0)
@@ -450,6 +548,58 @@ class Cline:
         return cline
 
     @classmethod
+    def _from_three_points_exact(cls, z0, z1, z2):
+        """Symbolic path for from_three_points using sympy.
+
+        Solves the cline equation c|z|² + αz + ᾱz̄ + d = 0 for three points
+        by setting up and solving the linear system symbolically.
+        """
+        # Check collinearity via the determinant method
+        # Three points are collinear iff Im((z2-z0)/(z1-z0)) = 0
+        delta10 = z1 - z0
+        if sympy.simplify(delta10) == 0:
+            # z0 == z1, use z0 and z2
+            return cls.from_line(z0, z2)
+
+        delta20 = z2 - z0
+        ratio = delta20 / delta10
+        if sympy.simplify(sympy.im(ratio)) == 0:
+            # Collinear → line
+            return cls.from_line(z0, z1)
+
+        # Not collinear → circle. Set c = 1.
+        # Solve: |z_i|² + α·z_i + ᾱ·z̄_i + d = 0 for i = 0,1,2
+        # Subtract eq(z0) from eq(z1) and eq(z2):
+        #   (|z1|²-|z0|²) + α(z1-z0) + ᾱ(z̄1-z̄0) = 0
+        #   (|z2|²-|z0|²) + α(z2-z0) + ᾱ(z̄2-z̄0) = 0
+        # Let α = a + bi, expand Re parts to get 2x2 real system
+        S1 = sympy.expand(z1 * sympy.conjugate(z1) - z0 * sympy.conjugate(z0))
+        S2 = sympy.expand(z2 * sympy.conjugate(z2) - z0 * sympy.conjugate(z0))
+
+        dx1 = sympy.re(delta10)
+        dy1 = sympy.im(delta10)
+        dx2 = sympy.re(delta20)
+        dy2 = sympy.im(delta20)
+
+        # System: [dx1, -dy1; dx2, -dy2] [a; b] = [-S1/2; -S2/2]
+        det = dx1 * (-dy2) - dx2 * (-dy1)
+        det = sympy.simplify(det)
+
+        a_val = ((-S1 / 2) * (-dy2) - (-S2 / 2) * (-dy1)) / det
+        b_val = (dx1 * (-S2 / 2) - dx2 * (-S1 / 2)) / det
+
+        alpha = sympy.simplify(a_val + sympy.I * b_val)
+        c = sympy.Integer(1)
+        d = sympy.simplify(
+            -(z0 * sympy.conjugate(z0) + alpha * z0
+              + sympy.conjugate(alpha) * sympy.conjugate(z0))
+        )
+
+        cline = cls(c=c, alpha=alpha, d=d)
+        cline.points = [z0, z1, z2]
+        return cline
+
+    @classmethod
     def from_line(cls, z0, z1):
         r"""Construct a cline representing a line through two points.
 
@@ -461,35 +611,34 @@ class Cline:
             Cline: A cline representing the line through z0 and z1
 
         For a line, we set :math:`c = 0`, and the parameters are calculated as:
-            - :math:`\alpha = i \cdot (z_1 - z_0)` (perpendicular to the line direction)
+            - :math:`\alpha = i \cdot \overline{(z_1 - z_0)}` (perpendicular to the line direction)
             - :math:`d = -2 \cdot \text{Re}(\alpha \cdot z_0)`
         """
-        # Convert inputs to complex numbers
-        # Handle tuples as (real, imag) coordinates
-        if isinstance(z0, tuple):
-            z0 = complex(z0[0], z0[1])
+        # Detect symbolic mode
+        exact = any(_is_sympy(x) for x in (z0, z1))
+
+        if exact:
+            z0 = sympy.sympify(z0)
+            z1 = sympy.sympify(z1)
+            c = sympy.Integer(0)
+            delta = z1 - z0
+            alpha = sympy.I * sympy.conjugate(delta)
+            d = -2 * sympy.re(alpha * z0)
         else:
-            z0 = complex(z0)
+            if isinstance(z0, tuple):
+                z0 = complex(z0[0], z0[1])
+            else:
+                z0 = complex(z0)
+            if isinstance(z1, tuple):
+                z1 = complex(z1[0], z1[1])
+            else:
+                z1 = complex(z1)
+            if abs(z1 - z0) < 1e-10:
+                raise ValueError("Points must be distinct to define a line")
+            c = 0.0
+            alpha = 1j * np.conj(z1 - z0)
+            d = -2 * np.real(alpha * z0)
 
-        if isinstance(z1, tuple):
-            z1 = complex(z1[0], z1[1])
-        else:
-            z1 = complex(z1)
-
-        # Check if points are distinct
-        if abs(z1 - z0) < 1e-10:
-            raise ValueError("Points must be distinct to define a line")
-
-        # For a line, set c = 0
-        c = 0.0
-
-        # Calculate alpha = i*(z₁ - z₀)
-        alpha = 1j * (z1 - z0)
-
-        # Calculate d = -2*Re(alpha*z0)
-        d = -2 * np.real(alpha * z0)
-
-        # Create the cline and store the points
         cline = cls(c=c, alpha=alpha, d=d)
         cline.points = [z0, z1]
         return cline
@@ -507,37 +656,590 @@ class Cline:
             Cline: A cline representing the circle with given center and radius
 
         For a circle, we set :math:`c = 1`, and the parameters are calculated as:
-            - :math:`\alpha = -\text{center}`
+            - :math:`\alpha = -\overline{\text{center}}`
             - :math:`d = |\text{center}|^2 - \text{radius}^2`
         """
-        # Convert center to complex number
-        if isinstance(center, tuple):
-            center = complex(center[0], center[1])
+        # Detect symbolic mode
+        exact = _is_sympy(center) or _is_sympy(radius)
+
+        if exact:
+            center = sympy.sympify(center)
+            radius = sympy.sympify(radius)
+            c = sympy.Integer(1)
+            alpha = -sympy.conjugate(center)
+            d = (center * sympy.conjugate(center) - radius**2).expand()
         else:
-            center = complex(center)
-
-        # Validate radius
-        radius = float(radius)
-        if radius <= 0:
-            raise ValueError("Radius must be positive")
-
-        # For a circle, set c = 1
-        c = 1.0
-
-        # Calculate alpha = -center
-        alpha = -center
-
-        # Calculate d = |center|^2 - radius^2
-        d = abs(center) ** 2 - radius**2
+            if isinstance(center, tuple):
+                center = complex(center[0], center[1])
+            else:
+                center = complex(center)
+            radius = float(radius)
+            if radius <= 0:
+                raise ValueError("Radius must be positive")
+            c = 1.0
+            alpha = -np.conj(center)
+            d = abs(center) ** 2 - radius**2
 
         # Create the cline
         cline = cls(c=c, alpha=alpha, d=d)
-
-        # Store the center and radius for reference
-        cline.center = center
-        cline.radius = radius
-
         return cline
+
+    @property
+    def hermitian_matrix(self):
+        r"""Return the 2x2 Hermitian matrix representing this cline.
+
+        Derivation:
+            The cline equation :math:`c|z|^2 + \alpha z + \bar\alpha\bar z + d = 0`
+            can be written as a Hermitian form. Define the column vector
+            :math:`\mathbf{z} = \binom{z}{1}`, then:
+
+            .. math::
+
+                \mathbf{z}^\dagger H \mathbf{z}
+                = (\bar z, 1) \begin{pmatrix} c & \bar\alpha \\ \alpha & d \end{pmatrix}
+                  \binom{z}{1}
+                = c|z|^2 + \bar\alpha \cdot 1 \cdot z + \alpha \cdot \bar z \cdot 1 + d
+
+            which is zero precisely when z lies on the cline. The matrix
+
+            .. math::
+
+                H = \begin{pmatrix} c & \bar{\alpha} \\ \alpha & d \end{pmatrix}
+
+            satisfies :math:`H^\dagger = H` since c, d are real and the off-diagonal
+            entries are conjugates. Note :math:`\det(H) = cd - |\alpha|^2 = -\Delta`
+            where :math:`\Delta` is the discriminant.
+
+        Returns:
+            sympy.Matrix (exact mode) or numpy.ndarray (numeric mode).
+
+        Reference:
+            Hitchman, *Geometry with an Introduction to Cosmic Topology*,
+            Definition 3.2.3. https://mphitchman.com/geometry/section3-2.html
+        """
+        alpha_conj = _conjugate(self.alpha)
+        if self._is_exact:
+            return sympy.Matrix([[self.c, alpha_conj], [self.alpha, self.d]])
+        return np.array([[self.c, alpha_conj], [self.alpha, self.d]])
+
+    @classmethod
+    def from_hermitian_matrix(cls, H):
+        r"""Construct a Cline from a 2x2 Hermitian matrix.
+
+        Args:
+            H: 2x2 array-like with :math:`H = H^\dagger`, i.e.,
+               H[0,0] and H[1,1] real, H[1,0] = conj(H[0,1]).
+
+        Returns:
+            Cline: the cline represented by H.
+
+        Raises:
+            ValueError: if H is not Hermitian.
+
+        Reference:
+            Hitchman, GCT, Definition 3.2.3
+        """
+        if _HAS_SYMPY and isinstance(H, sympy.Matrix):
+            c = H[0, 0]
+            alpha = H[1, 0]
+            d = H[1, 1]
+            if sympy.simplify(H[0, 1] - sympy.conjugate(alpha)) != 0:
+                raise ValueError("Matrix is not Hermitian: H[0,1] != conj(H[1,0])")
+        else:
+            H = np.asarray(H)
+            c = H[0, 0].real
+            alpha = H[1, 0]
+            d = H[1, 1].real
+            if abs(H[0, 1] - np.conj(alpha)) > 1e-10:
+                raise ValueError("Matrix is not Hermitian: H[0,1] != conj(H[1,0])")
+        return cls(c=c, alpha=alpha, d=d)
+
+    def contains(self, z):
+        r"""Test if a point z lies on this cline.
+
+        Derivation:
+            A point z lies on the cline iff it satisfies the equation
+
+            .. math::
+
+                c|z|^2 + \alpha z + \bar\alpha\bar z + d = 0
+
+            Equivalently, in homogeneous coordinates :math:`\mathbf{z} = (z,1)^T`,
+            the condition is :math:`\mathbf{z}^\dagger H \mathbf{z} = 0`.
+
+            For the point at infinity :math:`z = \infty`, use the homogeneous
+            representative :math:`\mathbf{z} = (1, 0)^T`. Then
+            :math:`\mathbf{z}^\dagger H \mathbf{z} = c`. So :math:`\infty` lies
+            on the cline iff :math:`c = 0`, i.e., the cline is a line.
+
+        Args:
+            z: complex number, sympy expression, or sympy.zoo (∞).
+
+        Returns:
+            bool (numeric mode), or bool (symbolic mode, after simplification).
+
+        Reference:
+            Hitchman, *GCT*, Definition 3.2.3.
+            https://mphitchman.com/geometry/section3-2.html
+        """
+        if _is_infinity(z):
+            # Lines (c=0) pass through ∞; circles (c≠0) do not
+            return self.is_line
+
+        if self._is_exact:
+            z = sympy.sympify(z)
+            val = self.c * z * sympy.conjugate(z) + self.alpha * z + \
+                sympy.conjugate(self.alpha) * sympy.conjugate(z) + self.d
+            return sympy.simplify(val) == 0
+
+        z = complex(z)
+        val = self.c * abs(z) ** 2 + self.alpha * z + \
+            np.conj(self.alpha) * np.conj(z) + self.d
+        return abs(val) < 1e-10
+
+    def invert(self, z):
+        r"""Return the image of z under inversion in this cline.
+
+        This method is polymorphic:
+
+        - If z is a **point** (complex, sympy expression, or sympy.zoo),
+          returns the image point under inversion/reflection.
+        - If z is a **Cline**, returns the image cline. Inversion maps
+          clines to clines (Hitchman, *GCT*, Theorem 3.2.12).
+
+        Derivation (point, circle inversion):
+            Given a circle with center :math:`z_0` and radius r, the inverse
+            of a point z is defined by the relation
+
+            .. math::
+
+                |z - z_0| \cdot |z^* - z_0| = r^2
+
+            with :math:`z^*` on the same ray from :math:`z_0` as z. Writing this
+            in complex form:
+
+            .. math::
+
+                z^* - z_0 = \frac{r^2}{\overline{z - z_0}}
+
+            which gives the formula :math:`z^* = z_0 + r^2 / \overline{(z - z_0)}`.
+
+            This is an involution: :math:`(z^*)^* = z`, which follows because
+            applying the formula twice yields
+            :math:`z_0 + r^2 / \overline{(z^* - z_0)} = z_0 + r^2 / (r^2/(z - z_0)) = z`.
+
+            Special cases: :math:`z_0 \mapsto \infty` (denominator zero) and
+            :math:`\infty \mapsto z_0` (by continuity on the Riemann sphere).
+
+        Derivation (point, line reflection):
+            For a line :math:`\alpha z + \bar\alpha\bar z + d = 0`, the
+            reflection of z across the line is
+
+            .. math::
+
+                z^* = -\frac{\bar\alpha\bar z + d}{\alpha}
+
+            Proof: a reflection maps z to :math:`z^*` such that the midpoint
+            :math:`(z + z^*)/2` lies on the line and :math:`z^* - z` is
+            perpendicular to the line direction. Substituting the formula into
+            the midpoint condition recovers the line equation for z, confirming
+            the midpoint lies on the line. This is also an involution.
+
+        Derivation (cline inversion):
+            Inversion maps clines to clines (Hitchman, *GCT*, Theorem 3.2.12).
+            If this cline (the inversion cline) has Hermitian matrix J, and the
+            argument cline has Hermitian matrix H, then the image cline has
+            Hermitian matrix
+
+            .. math::
+
+                H' = J \cdot H \cdot J
+
+            Proof: a point z lies on H iff :math:`\mathbf{z}^\dagger H \mathbf{z} = 0`.
+            Inversion in J acts on homogeneous coordinates as
+            :math:`\mathbf{z} \mapsto J \mathbf{z}` (up to scale). So :math:`z^*`
+            lies on :math:`H'` iff :math:`(J\mathbf{z})^\dagger H' (J\mathbf{z}) = 0`,
+            which equals :math:`\mathbf{z}^\dagger J H' J \mathbf{z}`. For this to
+            equal :math:`\mathbf{z}^\dagger H \mathbf{z}` we need :math:`J H' J = H`,
+            i.e., :math:`H' = J^{-1} H J^{-1}`. Since J is Hermitian and
+            :math:`J^{-1} \propto \text{adj}(J) \propto J` (for an involution),
+            this simplifies to :math:`H' = J H J` (up to a real scalar).
+
+        Args:
+            z: complex number, sympy expression, sympy.zoo (∞), or Cline.
+
+        Returns:
+            complex/sympy/sympy.zoo if z is a point, or Cline if z is a Cline.
+
+        Reference:
+            Hitchman, *GCT*, Definition 3.2.6 (point inversion in a circle).
+            Hitchman, *GCT*, Section 3.1 (reflection in a line).
+            Hitchman, *GCT*, Theorem 3.2.12 (inversion maps clines to clines).
+            https://mphitchman.com/geometry/section3-2.html
+        """
+        # Dispatch: if z is a Cline, invert the cline
+        if isinstance(z, Cline):
+            return self._invert_cline(z)
+
+        # Otherwise, invert a point
+        return self._invert_point(z)
+
+    def _invert_point(self, z):
+        """Invert a point z in this cline."""
+        if self.is_circle:
+            if _is_infinity(z):
+                return self.center
+
+            if self._is_exact:
+                z = sympy.sympify(z)
+                diff = z - self.center
+                if sympy.simplify(diff) == 0:
+                    return sympy.zoo
+                return sympy.simplify(
+                    self.center + self.radius ** 2 / sympy.conjugate(diff)
+                )
+
+            z = complex(z)
+            diff = z - self.center
+            if abs(diff) < 1e-15:
+                return sympy.zoo
+            return self.center + self.radius ** 2 / np.conj(diff)
+
+        elif self.is_line:
+            if _is_infinity(z):
+                return sympy.zoo
+
+            if self._is_exact:
+                z = sympy.sympify(z)
+                return sympy.simplify(
+                    -(sympy.conjugate(self.alpha) * sympy.conjugate(z) + self.d)
+                    / self.alpha
+                )
+
+            z = complex(z)
+            return -(np.conj(self.alpha) * np.conj(z) + self.d) / self.alpha
+
+        else:
+            raise ValueError("Cannot invert in a degenerate cline (point or invalid)")
+
+    def _invert_cline(self, other):
+        r"""Invert a cline in this cline.
+
+        Pick three points on the source cline, invert each through this cline,
+        and construct the image cline from the three image points. This approach
+        is always correct and avoids normalization issues with the matrix formula.
+        """
+        if other.is_circle:
+            # Pick three points on the circle
+            if other._is_exact:
+                # Use center ± radius and center + i*radius
+                pts = [
+                    other.center + other.radius,
+                    other.center - other.radius,
+                    other.center + sympy.I * other.radius,
+                ]
+            else:
+                pts = [other.center + other.radius * np.exp(1j * t)
+                       for t in [0, 2 * np.pi / 3, 4 * np.pi / 3]]
+        elif other.is_line:
+            if other._is_exact:
+                # Pick two finite points on the line and ∞
+                # Solve for a point: α·z + ᾱ·z̄ + d = 0
+                # Use z = -d/(2α) · (ᾱ/|α|) ... simpler: use stored points or construct
+                a, b = sympy.re(other.alpha), sympy.im(other.alpha)
+                if a != 0:
+                    z0 = -other.d / (2 * a) + sympy.Integer(0) * sympy.I
+                    z1 = z0 + other.direction_vector
+                else:
+                    z0 = sympy.I * other.d / (2 * b)
+                    z1 = z0 + other.direction_vector
+                pts = [z0, z1, sympy.zoo]
+            else:
+                z0 = other.point_on_line
+                z1 = other.point_on_line + other.direction_vector
+                pts = [z0, z1, sympy.zoo]
+        else:
+            raise ValueError("Cannot invert a degenerate cline")
+
+        # Invert the three points
+        img_pts = [self._invert_point(p) for p in pts]
+
+        return Cline.from_three_points(*img_pts)
+
+    def intersection(self, other):
+        r"""Return the intersection points of two clines.
+
+        Returns:
+            list of 0, 1, or 2 complex numbers (or sympy expressions).
+
+        Reference:
+            Standard analytic geometry; used implicitly in
+            Hitchman GCT Chapters 5-6.
+        """
+        if not isinstance(other, Cline):
+            raise TypeError("Can only intersect with another Cline")
+
+        if self.is_line and other.is_line:
+            return self._intersect_line_line(other)
+        elif self.is_circle and other.is_circle:
+            return self._intersect_circle_circle(other)
+        elif self.is_circle and other.is_line:
+            return self._intersect_circle_line(other)
+        elif self.is_line and other.is_circle:
+            return other._intersect_circle_line(self)
+        else:
+            raise ValueError("Cannot intersect degenerate clines")
+
+    def _intersect_line_line(self, other):
+        """Intersect two lines. Returns 0 or 1 points."""
+        # Line equations: 2*Re(α·z) + d = 0
+        # In Cartesian: a₁x - b₁y + d₁/2 = 0 and a₂x - b₂y + d₂/2 = 0
+        if self._is_exact or other._is_exact:
+            a1, b1, d1 = sympy.re(self.alpha), sympy.im(self.alpha), self.d
+            a2, b2, d2 = sympy.re(other.alpha), sympy.im(other.alpha), other.d
+            det = a1 * (-b2) - a2 * (-b1)
+            if sympy.simplify(det) == 0:
+                return []  # parallel
+            x = ((-d1 / 2) * (-b2) - (-d2 / 2) * (-b1)) / det
+            y = (a1 * (-d2 / 2) - a2 * (-d1 / 2)) / det
+            return [sympy.simplify(x + sympy.I * y)]
+
+        a1, b1, d1 = self.a, self.b, self.d
+        a2, b2, d2 = other.a, other.b, other.d
+        # System: a₁x - b₁y = -d₁/2, a₂x - b₂y = -d₂/2
+        A = np.array([[a1, -b1], [a2, -b2]])
+        rhs = np.array([-d1 / 2, -d2 / 2])
+        det = np.linalg.det(A)
+        if abs(det) < 1e-10:
+            return []  # parallel
+        sol = np.linalg.solve(A, rhs)
+        return [complex(sol[0], sol[1])]
+
+    def _intersect_circle_circle(self, other):
+        """Intersect two circles. Returns 0, 1, or 2 points."""
+        # Subtract the two cline equations to get the radical axis
+        c_diff = self.c - other.c
+        alpha_diff = self.alpha - other.alpha
+        d_diff = self.d - other.d
+
+        # Check if the radical axis is degenerate
+        # When c_diff=0 and alpha_diff=0, the radical equation is just d_diff=0
+        # If d_diff≠0: no intersection (concentric, different radii)
+        # If d_diff=0: identical circles (infinite intersections, return [])
+        if self._is_exact or other._is_exact:
+            if sympy.simplify(c_diff) == 0 and sympy.simplify(alpha_diff) == 0:
+                return []
+        else:
+            if abs(c_diff) < 1e-10 and abs(alpha_diff) < 1e-10:
+                return []
+
+        radical = Cline(c=c_diff, alpha=alpha_diff, d=d_diff)
+        return self._intersect_circle_line(radical)
+
+    def _intersect_circle_line(self, line):
+        """Intersect a circle (self) with a line. Returns 0, 1, or 2 points."""
+        if self._is_exact or line._is_exact:
+            return self._intersect_circle_line_exact(line)
+
+        # Numeric: parametrize the line and substitute into circle equation
+        # Line: a·x - b·y + d/2 = 0, direction = (b, -a) (note: not our direction_vector)
+        # Actually, use the cline equation directly.
+        # Line passes through point p in direction v.
+        # Parametrize z = p + t*v, substitute into circle equation.
+        a_l, b_l, d_l = line.a, line.b, line.d
+
+        # Solve for parametric intersection with circle
+        # Circle: c|z|² + αz + ᾱz̄ + d_c = 0
+        # Line in Cartesian: a_l·x - b_l·y + d_l/2 = 0
+        # From line: if |b_l| > |a_l|, y = (a_l·x + d_l/2) / b_l
+        #            else x = (b_l·y - d_l/2) / a_l
+
+        # Use the approach: solve the line for one variable, substitute
+        # Line: 2*Re(α_l * z) + d_l = 0 → 2(a_l·x - b_l·y) + d_l = 0
+
+        if abs(b_l) > abs(a_l):
+            # y = (a_l·x + d_l/2) / b_l
+            # Sub into |z|² = x² + y² and circle eq
+            # Circle: c(x²+y²) + 2(a_c·x - b_c·y) + d_c = 0
+            a_c = np.real(self.alpha)
+            b_c = np.imag(self.alpha)
+            # y = (a_l*x + d_l/2) / b_l = m*x + n
+            m = a_l / b_l
+            n = d_l / (2 * b_l)
+            # x² + y² = x² + (mx+n)² = (1+m²)x² + 2mnx + n²
+            A_coef = self.c * (1 + m ** 2)
+            B_coef = self.c * 2 * m * n + 2 * (a_c - b_c * m)
+            C_coef = self.c * n ** 2 - 2 * b_c * n + self.d
+        else:
+            # x = (b_l*y - d_l/2) / a_l = m*y + n
+            a_c = np.real(self.alpha)
+            b_c = np.imag(self.alpha)
+            m = b_l / a_l
+            n = -d_l / (2 * a_l)
+            # x² + y² = (my+n)² + y² = (1+m²)y² + 2mny + n²
+            A_coef = self.c * (1 + m ** 2)
+            B_coef = self.c * 2 * m * n + 2 * (a_c * m - b_c)
+            C_coef = self.c * n ** 2 + 2 * a_c * n + self.d
+
+        disc = B_coef ** 2 - 4 * A_coef * C_coef
+        if disc < -1e-10:
+            return []
+        if abs(disc) < 1e-10:
+            disc = 0
+
+        results = []
+        for sign in [1, -1]:
+            t = (-B_coef + sign * np.sqrt(disc)) / (2 * A_coef)
+            if abs(b_l) > abs(a_l):
+                x, y = t, m * t + n
+            else:
+                y, x = t, m * t + n
+            results.append(complex(x, y))
+
+        if abs(disc) < 1e-10:
+            return results[:1]  # tangent — one point
+        return results
+
+    def _intersect_circle_line_exact(self, line):
+        """Symbolic circle-line intersection using sympy.solve."""
+        x, y = sympy.symbols('x y', real=True)
+        z_expr = x + sympy.I * y
+        z_conj = x - sympy.I * y
+
+        # Circle equation
+        eq1 = self.c * (x**2 + y**2) + self.alpha * z_expr + \
+            sympy.conjugate(self.alpha) * z_conj + self.d
+
+        # Line equation
+        eq2 = line.c * (x**2 + y**2) + line.alpha * z_expr + \
+            sympy.conjugate(line.alpha) * z_conj + line.d
+
+        eq1 = sympy.expand(sympy.re(eq1))
+        eq2 = sympy.expand(sympy.re(eq2))
+
+        solutions = sympy.solve([eq1, eq2], [x, y])
+        if isinstance(solutions, dict):
+            solutions = [solutions]
+        return [sympy.simplify(sol[0] + sympy.I * sol[1])
+                if isinstance(sol, (list, tuple))
+                else sympy.simplify(sol[x] + sympy.I * sol[y])
+                for sol in solutions]
+
+    def angle(self, other):
+        r"""Return the angle between two clines at their intersection.
+
+        For two circles with centers z1, z2 and radii r1, r2:
+            :math:`\cos\theta = \frac{|z_1 - z_2|^2 - r_1^2 - r_2^2}{2 r_1 r_2}`
+
+        For circle and line, or two lines: computed from direction vectors
+        at the intersection point.
+
+        Returns:
+            float (radians) or sympy expression.
+
+        Raises:
+            ValueError: if the clines do not intersect.
+
+        Reference:
+            Hitchman, GCT, Section 3.2
+        """
+        if self.is_circle and other.is_circle:
+            if self._is_exact or other._is_exact:
+                d_sq = _abs_sq(self.center - other.center)
+                cos_theta = (d_sq - self.radius**2 - other.radius**2) / \
+                    (2 * self.radius * other.radius)
+                return sympy.acos(sympy.simplify(cos_theta))
+
+            d = abs(self.center - other.center)
+            cos_theta = (d**2 - self.radius**2 - other.radius**2) / \
+                (2 * self.radius * other.radius)
+            # Clamp for numerical stability
+            cos_theta = max(-1, min(1, cos_theta))
+            return np.arccos(cos_theta)
+
+        elif self.is_line and other.is_line:
+            # Angle between two lines from their normal vectors
+            if self._is_exact or other._is_exact:
+                dot = sympy.re(self.alpha * sympy.conjugate(other.alpha))
+                return sympy.acos(sympy.simplify(
+                    dot / (sympy.Abs(self.alpha) * sympy.Abs(other.alpha))
+                ))
+
+            dot = np.real(self.alpha * np.conj(other.alpha))
+            cos_theta = dot / (abs(self.alpha) * abs(other.alpha))
+            cos_theta = max(-1, min(1, cos_theta))
+            return np.arccos(abs(cos_theta))
+
+        else:
+            # Circle-line case: find intersection, compute angle there
+            pts = self.intersection(other)
+            if not pts:
+                raise ValueError("Clines do not intersect")
+
+            # At intersection point, angle = angle between tangent to circle
+            # and the line direction. Use the formula via normals.
+            if self.is_circle:
+                circle, line = self, other
+            else:
+                circle, line = other, self
+
+            # Tangent to circle at intersection point is perpendicular to radius
+            p = pts[0]
+            if circle._is_exact or line._is_exact:
+                p = sympy.sympify(p)
+                radius_dir = p - circle.center
+                # Angle between radius direction and line normal
+                dot = sympy.re(radius_dir * sympy.conjugate(line.alpha))
+                cos_angle = dot / (sympy.Abs(radius_dir) * sympy.Abs(line.alpha))
+                # Angle between tangent and line = pi/2 - angle between radius and line
+                return sympy.simplify(sympy.Abs(sympy.asin(sympy.simplify(cos_angle))))
+
+            radius_dir = p - circle.center
+            dot = np.real(radius_dir * np.conj(line.alpha))
+            cos_angle = dot / (abs(radius_dir) * abs(line.alpha))
+            cos_angle = max(-1, min(1, cos_angle))
+            return abs(np.arcsin(cos_angle))
+
+    def is_orthogonal(self, other):
+        r"""Return True if two clines meet at right angles.
+
+        Derivation:
+            Two clines with Hermitian matrices :math:`H_1, H_2` are orthogonal
+            iff :math:`\text{tr}(H_1 \text{adj}(H_2)) = 0`. Expanding this trace
+            with
+
+            .. math::
+
+                H_1 = \begin{pmatrix} c_1 & \bar\alpha_1 \\ \alpha_1 & d_1 \end{pmatrix},
+                \quad
+                H_2 = \begin{pmatrix} c_2 & \bar\alpha_2 \\ \alpha_2 & d_2 \end{pmatrix}
+
+            and :math:`\text{adj}(H_2) = \begin{pmatrix} d_2 & -\bar\alpha_2 \\ -\alpha_2 & c_2 \end{pmatrix}`,
+            we get:
+
+            .. math::
+
+                \text{tr}(H_1 \cdot \text{adj}(H_2))
+                = c_1 d_2 - \bar\alpha_1 \alpha_2 - \alpha_1 \bar\alpha_2 + d_1 c_2
+                = c_1 d_2 + c_2 d_1 - 2\text{Re}(\alpha_1 \bar\alpha_2)
+
+            This criterion is equivalent to the angle formula giving
+            :math:`\cos\theta = 0` for circles, and is computationally simpler
+            as it does not require finding intersection points.
+
+            For the Poincare disk model, geodesics are precisely the clines
+            orthogonal to the unit circle (:math:`c=1, \alpha=0, d=-1`).
+
+        Reference:
+            Hitchman, *GCT*, Section 5.1 (orthogonality, Poincare disk geodesics).
+            https://mphitchman.com/geometry/section5-1.html
+        """
+        val = self.c * other.d + other.c * self.d - \
+            2 * _real(self.alpha * _conjugate(other.alpha))
+
+        if self._is_exact or other._is_exact:
+            return sympy.simplify(val) == 0
+        return abs(val) < 1e-10
 
     def plot(
         self,
