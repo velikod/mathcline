@@ -1,0 +1,906 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Usage &mdash; Cline 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="_static/plot_directive.css" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Reference" href="reference.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            Cline
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Usage</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#creating-clines">Creating Clines</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-cline-from-equation-parameters">Creating a Cline from Equation Parameters</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-circle">Creating a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-line">Creating a Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#creating-a-cline-from-three-points">Creating a Cline from Three Points</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#example-three-collinear-points">Example: Three Collinear Points</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#accessing-properties">Accessing Properties</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#for-circles">For Circles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#for-lines">For Lines</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#visualization">Visualization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#hermitian-matrix-representation">Hermitian Matrix Representation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#testing-point-membership">Testing Point Membership</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#inversion-and-reflection">Inversion and Reflection</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#point-inversion-in-a-circle">Point Inversion in a Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#point-reflection-in-a-line">Point Reflection in a Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#circle-circle">Circle → Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#circle-line">Circle → Line</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#line-circle">Line → Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#line-line">Line → Line</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#intersection">Intersection</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#angles-and-orthogonality">Angles and Orthogonality</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#symbolic-mode">Symbolic Mode</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#neat-examples">Neat Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#inverting-a-grid-in-the-unit-circle">Inverting a Grid in the Unit Circle</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#apollonius-theorem-via-cline-inversion">Apollonius’ Theorem via Cline Inversion</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="reference.html">Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Cline</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Usage</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/usage.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="usage">
+<h1>Usage<a class="headerlink" href="#usage" title="Link to this heading"></a></h1>
+<section id="creating-clines">
+<h2>Creating Clines<a class="headerlink" href="#creating-clines" title="Link to this heading"></a></h2>
+<p>The Cline class implements the general equation:</p>
+<div class="math notranslate nohighlight">
+\[c z \bar{z} + \alpha z + \bar{\alpha} \bar{z} + d = 0\]</div>
+<p>where <span class="math notranslate nohighlight">\(c\)</span> and <span class="math notranslate nohighlight">\(d\)</span> are real numbers and <span class="math notranslate nohighlight">\(\alpha\)</span> is a complex number.</p>
+<section id="creating-a-cline-from-equation-parameters">
+<h3>Creating a Cline from Equation Parameters<a class="headerlink" href="#creating-a-cline-from-equation-parameters" title="Link to this heading"></a></h3>
+<p>The most direct way to create a cline is by specifying its equation parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a cline using equation parameters</span>
+<span class="c1"># c=1, alpha=-3-4j, d=16 represents a circle with center 3+4j and radius 5</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=-</span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a cline using equation parameters</span>
+<span class="c1"># c=1, alpha=-3-4j, d=16 represents a circle with center 3+4j and radius 5</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=-</span><span class="mi">3</span><span class="o">-</span><span class="mi">4</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">16</span><span class="p">)</span>
+
+<span class="c1"># Create plot - the .plot() method now calculates appropriate limits automatically</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">cline</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Circle from Parameters&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Circle Created from Equation Parameters&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/27a5ae36aa741aceae939a782f35ef68/usage-1.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/4fc182b95617a8e855f6e180874ed440/usage-1.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/e95187dc00cc7120e6e3d1839bc2471a/usage-1.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/441b898ca61c8d4d3c77a7303d5617c5/usage-1.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-1.png" class="plot-directive" src="_images/usage-1.png" />
+</figure>
+</section>
+<section id="creating-a-circle">
+<h3>Creating a Circle<a class="headerlink" href="#creating-a-circle" title="Link to this heading"></a></h3>
+<p>You can create a circle by specifying its center and radius:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a circle with center at 1+2j and radius 3</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a circle with center at 1+2j and radius 3</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Create plot with automatic limits based on circle center and radius</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Circle&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Circle with Center at 1+2j and Radius 3&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/7224d456bb00c83cfd284bce8f4e0693/usage-2.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/c050474e3025a50d0a8febb3551c4af2/usage-2.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/8148d66082b2a59be686c3a9eb3e95c7/usage-2.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/b6cbcbdfddfd7f9959ffbfb0a800ab39/usage-2.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-2.png" class="plot-directive" src="_images/usage-2.png" />
+</figure>
+</section>
+<section id="creating-a-line">
+<h3>Creating a Line<a class="headerlink" href="#creating-a-line" title="Link to this heading"></a></h3>
+<p>You can create a line by specifying two points:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a line passing through the points 0 and 1+1j</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="n">z0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a line passing through points 0 and 1+1j</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="n">z0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+
+<span class="c1"># Create plot - the limits are now automatically calculated</span>
+<span class="c1"># based on the points used to create the line</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">line</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line&#39;</span><span class="p">,</span> <span class="n">show_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Line Through Points 0 and 1+1j&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/2da93344e0ee120499df47394073f4cb/usage-3.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/a4a30118dd039472541da41f108f75da/usage-3.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/327440f536d914780b57ab37329a13d9/usage-3.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/eb69ea7b4b5e9398d7d49b58db1df9ad/usage-3.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-3.png" class="plot-directive" src="_images/usage-3.png" />
+</figure>
+</section>
+<section id="creating-a-cline-from-three-points">
+<h3>Creating a Cline from Three Points<a class="headerlink" href="#creating-a-cline-from-three-points" title="Link to this heading"></a></h3>
+<p>The most general method creates a cline passing through three points:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a cline passing through three points</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="n">z0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">z2</span><span class="o">=</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">cline</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create three points in the complex plane</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="mi">1</span><span class="n">j</span>
+
+<span class="c1"># Create a cline passing through these three points</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span>
+
+<span class="c1"># Create plot with automatic limits</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">cline</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;purple&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Circle through 3 points&#39;</span><span class="p">,</span> <span class="n">show_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Circle Through Three Points&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/bf34cc45d881d0517ae0698aef031739/usage-4.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/9132c18f0a4cc14b8a989b3b90cb8962/usage-4.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/a15d149a4a8618b3b8486fc9f4911774/usage-4.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/7c71de99fd1477ca7cb630d03882c7ac/usage-4.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-4.png" class="plot-directive" src="_images/usage-4.png" />
+</figure>
+<p>This will create a circle if the points are not collinear, or a line if they are collinear.</p>
+</section>
+<section id="example-three-collinear-points">
+<h3>Example: Three Collinear Points<a class="headerlink" href="#example-three-collinear-points" title="Link to this heading"></a></h3>
+<p>When the three points lie on a straight line, the result is a line:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create three collinear points (all lie on the line y = 2x)</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="n">j</span>  <span class="c1"># (1,2)</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span><span class="n">j</span>  <span class="c1"># (2,4)</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">6</span><span class="n">j</span>  <span class="c1"># (3,6)</span>
+
+<span class="c1"># Create a cline passing through these three points</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span>
+
+<span class="c1"># This will be a line, not a circle</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Is circle: </span><span class="si">{</span><span class="n">cline</span><span class="o">.</span><span class="n">is_circle</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># False</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Is line: </span><span class="si">{</span><span class="n">cline</span><span class="o">.</span><span class="n">is_line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>      <span class="c1"># True</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create three collinear points (these all lie on the line y = 2x)</span>
+<span class="n">z0</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span><span class="n">j</span>  <span class="c1"># (1,2)</span>
+<span class="n">z1</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">4</span><span class="n">j</span>  <span class="c1"># (2,4)</span>
+<span class="n">z2</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">+</span> <span class="mi">6</span><span class="n">j</span>  <span class="c1"># (3,6)</span>
+
+<span class="c1"># Create a cline passing through these three points</span>
+<span class="c1"># Because the points are collinear, this will create a line</span>
+<span class="n">cline</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_three_points</span><span class="p">(</span><span class="n">z0</span><span class="p">,</span> <span class="n">z1</span><span class="p">,</span> <span class="n">z2</span><span class="p">)</span>
+
+<span class="c1"># Create plot with automatic limits</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">cline</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;orange&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line through 3 collinear points&#39;</span><span class="p">,</span> <span class="n">show_points</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># Add a grid to visualize the collinearity</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;-&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Line Through Three Collinear Points&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/0d5e8caada42a9ae3867ea761d0c8079/usage-5.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/db33266071a90223464f504df6cb7b4e/usage-5.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/72fe9b72480e6a2f9a784ca2d377f547/usage-5.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/0d8788ebff044e876595e1a5e61dedb0/usage-5.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-5.png" class="plot-directive" src="_images/usage-5.png" />
+</figure>
+</section>
+</section>
+<section id="accessing-properties">
+<h2>Accessing Properties<a class="headerlink" href="#accessing-properties" title="Link to this heading"></a></h2>
+<p>Depending on whether your cline is a circle or a line, different properties are available:</p>
+<section id="for-circles">
+<h3>For Circles<a class="headerlink" href="#for-circles" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">circle</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="c1"># Access circle properties</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Center: </span><span class="si">{</span><span class="n">circle</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Radius: </span><span class="si">{</span><span class="n">circle</span><span class="o">.</span><span class="n">radius</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="for-lines">
+<h3>For Lines<a class="headerlink" href="#for-lines" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">line</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="n">z0</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>
+
+<span class="c1"># Access line properties</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Normal vector: </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">normal_vector</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Direction vector: </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">direction_vector</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Distance from origin: </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">distance_from_origin</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Point on line: </span><span class="si">{</span><span class="n">line</span><span class="o">.</span><span class="n">point_on_line</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="visualization">
+<h2>Visualization<a class="headerlink" href="#visualization" title="Link to this heading"></a></h2>
+<p>Clines can be easily visualized using the built-in plotting functionality:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="c1"># Create a figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Plot a circle</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Circle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot a line</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="n">z0</span><span class="o">=-</span><span class="mi">3</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="n">j</span><span class="p">)</span>
+<span class="n">line</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line&#39;</span><span class="p">)</span>
+
+<span class="c1"># No need to manually set limits - they are automatically calculated</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Combined Circle and Line Plot&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Create a figure</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># Plot a circle</span>
+<span class="n">circle</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">circle</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Circle&#39;</span><span class="p">)</span>
+
+<span class="c1"># Plot a line</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="n">z0</span><span class="o">=-</span><span class="mi">3</span><span class="o">-</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="n">z1</span><span class="o">=</span><span class="mi">3</span><span class="o">+</span><span class="mi">4</span><span class="n">j</span><span class="p">)</span>
+<span class="n">line</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line&#39;</span><span class="p">)</span>
+
+<span class="c1"># The plot automatically adjusts to show both the circle and line</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Combined Circle and Line Plot&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/3b4d46b030ab7c874cab0e34ee522805/usage-6.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/e3fbc1e07b560bf097692f107f097c26/usage-6.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/2934eedd3a9cc967affe52cab055ca7a/usage-6.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/712c158167d638c0703ef60a6079168d/usage-6.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-6.png" class="plot-directive" src="_images/usage-6.png" />
+</figure>
+<p>You can customize the plot appearance using various parameters:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cline</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span>
+    <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span>                  <span class="c1"># Matplotlib axes to plot on</span>
+    <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">),</span>         <span class="c1"># Figure size if creating a new figure</span>
+    <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              <span class="c1"># Override automatic x-axis limits if needed</span>
+    <span class="n">ylim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>              <span class="c1"># Override automatic y-axis limits if needed</span>
+    <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span>           <span class="c1"># Color of the cline</span>
+    <span class="n">point_color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span>      <span class="c1"># Color of the points used to create the cline</span>
+    <span class="n">label</span><span class="o">=</span><span class="s1">&#39;My Cline&#39;</span><span class="p">,</span>       <span class="c1"># Label for the legend</span>
+    <span class="n">show_points</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>       <span class="c1"># Whether to show the points used to create the cline</span>
+    <span class="n">num_points</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>         <span class="c1"># Number of points to use when plotting a circle</span>
+    <span class="n">precision</span><span class="o">=</span><span class="mi">4</span>             <span class="c1"># Number of decimal places for displayed values</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="hermitian-matrix-representation">
+<h2>Hermitian Matrix Representation<a class="headerlink" href="#hermitian-matrix-representation" title="Link to this heading"></a></h2>
+<p>Every cline corresponds to a 2×2 Hermitian matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}H = \begin{pmatrix} c &amp; \bar\alpha \\ \alpha &amp; d \end{pmatrix}\end{split}\]</div>
+<p>A point <span class="math notranslate nohighlight">\(z\)</span> lies on the cline iff <span class="math notranslate nohighlight">\(\mathbf{z}^\dagger H \mathbf{z} = 0\)</span>
+where <span class="math notranslate nohighlight">\(\mathbf{z} = (z, 1)^T\)</span>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Unit circle: H = [[1, 0], [0, -1]]</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">hermitian_matrix</span><span class="p">)</span>
+
+<span class="c1"># Round-trip: matrix → cline → matrix</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">2</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">hermitian_matrix</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_hermitian_matrix</span><span class="p">(</span><span class="n">H</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Center: </span><span class="si">{</span><span class="n">C2</span><span class="o">.</span><span class="n">center</span><span class="si">}</span><span class="s2">, Radius: </span><span class="si">{</span><span class="n">C2</span><span class="o">.</span><span class="n">radius</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="testing-point-membership">
+<h2>Testing Point Membership<a class="headerlink" href="#testing-point-membership" title="Link to this heading"></a></h2>
+<p>Use <code class="docutils literal notranslate"><span class="pre">contains</span></code> to test whether a point lies on a cline:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">sympy</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>        <span class="c1"># True — on the circle</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="mf">0.5</span><span class="p">))</span>      <span class="c1"># False — inside</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">zoo</span><span class="p">))</span>  <span class="c1"># False — circles don&#39;t contain ∞</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="mf">5.0</span><span class="p">))</span>      <span class="c1"># True — on the line</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="mi">1</span><span class="n">j</span><span class="p">))</span>       <span class="c1"># False — off the line</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">L</span><span class="o">.</span><span class="n">contains</span><span class="p">(</span><span class="n">sympy</span><span class="o">.</span><span class="n">zoo</span><span class="p">))</span>  <span class="c1"># True — lines contain ∞</span>
+</pre></div>
+</div>
+</section>
+<section id="inversion-and-reflection">
+<h2>Inversion and Reflection<a class="headerlink" href="#inversion-and-reflection" title="Link to this heading"></a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">invert</span></code> method is polymorphic: pass a point to get a point,
+or pass a cline to get the image cline.</p>
+<section id="point-inversion-in-a-circle">
+<h3>Point Inversion in a Circle<a class="headerlink" href="#point-inversion-in-a-circle" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inversion circle (r=2)&#39;</span><span class="p">)</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="mf">0.5</span><span class="n">j</span><span class="p">,</span> <span class="mi">4</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mf">0.5</span><span class="o">+</span><span class="mf">1.5</span><span class="n">j</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">z_inv</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_inv</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z_inv</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">z_inv</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z_inv</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span> <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">),</span>
+                <span class="n">arrowprops</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">arrowstyle</span><span class="o">=</span><span class="s1">&#39;-&gt;&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">))</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original points&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inverted points&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Point inversion in a circle&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/b962c6c476d6387da67fd87824d02da3/usage-7.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/d1772300f1810ab05bafc40aa3b1fef6/usage-7.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/89cccb31a41e2ccf905e72d798803e60/usage-7.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/82985c3615902f73452f5af951d0a30d/usage-7.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-7.png" class="plot-directive" src="_images/usage-7.png" />
+</figure>
+</section>
+<section id="point-reflection-in-a-line">
+<h3>Point Reflection in a Line<a class="headerlink" href="#point-reflection-in-a-line" title="Link to this heading"></a></h3>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">L</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="mi">1</span><span class="n">j</span><span class="p">)</span>  <span class="c1"># line y = x</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line y = x&#39;</span><span class="p">)</span>
+
+<span class="n">points</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="o">+</span><span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="mi">1</span><span class="o">+</span><span class="mi">3</span><span class="n">j</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="o">+</span><span class="mi">2</span><span class="n">j</span><span class="p">,</span> <span class="mi">2</span><span class="o">-</span><span class="mi">1</span><span class="n">j</span><span class="p">]</span>
+<span class="k">for</span> <span class="n">z</span> <span class="ow">in</span> <span class="n">points</span><span class="p">:</span>
+    <span class="n">z_ref</span> <span class="o">=</span> <span class="n">L</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">z</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">z_ref</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z_ref</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="n">z</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">z_ref</span><span class="o">.</span><span class="n">real</span><span class="p">],</span> <span class="p">[</span><span class="n">z</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">z_ref</span><span class="o">.</span><span class="n">imag</span><span class="p">],</span> <span class="s1">&#39;gray&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.4</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;bo&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original points&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="s1">&#39;ro&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Reflected points&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Point reflection in a line&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/ce71d51e701790d391f8ef6235a4b7ed/usage-8.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/0553c93001e2ca86f4080b0bf498cb02/usage-8.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/7c3f9dd2e504dc2f977162838e3d71b2/usage-8.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/9e1485b3eb542ec8af979adf2a593576/usage-8.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-8.png" class="plot-directive" src="_images/usage-8.png" />
+</figure>
+</section>
+<section id="circle-circle">
+<h3>Circle → Circle<a class="headerlink" href="#circle-circle" title="Link to this heading"></a></h3>
+<p>A circle not passing through the inversion center maps to another circle.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Inversion circle</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">S</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">S</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inversion circle&#39;</span><span class="p">)</span>
+<span class="c1"># Original</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">C</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
+        <span class="n">C</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="n">C</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original circle&#39;</span><span class="p">)</span>
+<span class="c1"># Image</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">C_img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">C_img</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
+        <span class="n">C_img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="n">C_img</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Image circle&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Circle → Circle (not through center)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/5730e244f6571f428de9ae012ecfe2f0/usage-9.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/58604e15cf7175389f85e8c110b265e1/usage-9.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/abb8b037f2082a41c1b66283e948ebfd/usage-9.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/d277986702b6d5c82b1499196d908328/usage-9.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-9.png" class="plot-directive" src="_images/usage-9.png" />
+</figure>
+</section>
+<section id="circle-line">
+<h3>Circle → Line<a class="headerlink" href="#circle-line" title="Link to this heading"></a></h3>
+<p>A circle passing through the inversion center maps to a line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># passes through origin</span>
+<span class="n">C_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">C</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Inversion circle</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inversion circle&#39;</span><span class="p">)</span>
+<span class="c1"># Original circle (through origin)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original circle (through 0)&#39;</span><span class="p">)</span>
+<span class="c1"># Image line</span>
+<span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+<span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x_line</span><span class="p">,</span> <span class="n">y_line</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="sa">f</span><span class="s1">&#39;Image line&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Circle → Line (circle through center)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/47b53b1d0c08401a566a6d5b945a8b50/usage-10.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/ebef10fe556315a212f50ecfddd94011/usage-10.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/223fc51be858b3ed9c3e48da96d69a7d/usage-10.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/62a28302de180359363bc2295a1a210b/usage-10.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-10.png" class="plot-directive" src="_images/usage-10.png" />
+</figure>
+</section>
+<section id="line-circle">
+<h3>Line → Circle<a class="headerlink" href="#line-circle" title="Link to this heading"></a></h3>
+<p>A line not passing through the inversion center maps to a circle through the center.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># vertical line x=1</span>
+<span class="n">L_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Inversion circle</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inversion circle&#39;</span><span class="p">)</span>
+<span class="c1"># Original line x=1</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Original line x=1&#39;</span><span class="p">)</span>
+<span class="c1"># Image circle (passes through origin)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L_img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">real</span> <span class="o">+</span> <span class="n">L_img</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
+        <span class="n">L_img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">imag</span> <span class="o">+</span> <span class="n">L_img</span><span class="o">.</span><span class="n">radius</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Image circle&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Line → Circle (line not through center)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/f7903f4d60ab2f549e8e2d254e3f466d/usage-11.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/bd3fcd524c434913dd34d601503794d1/usage-11.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/ac5a88c7f8ce636a5cf4d787e3fc5dc8/usage-11.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/1073cf7536dad01a113bd6561607ecf3/usage-11.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-11.png" class="plot-directive" src="_images/usage-11.png" />
+</figure>
+</section>
+<section id="line-line">
+<h3>Line → Line<a class="headerlink" href="#line-line" title="Link to this heading"></a></h3>
+<p>A line passing through the inversion center maps to a line.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  <span class="c1"># real axis, through origin</span>
+<span class="n">L_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+
+<span class="c1"># Inversion circle</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k--&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Inversion circle&#39;</span><span class="p">)</span>
+<span class="c1"># Original and image (both the real axis)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Line through center (fixed)&#39;</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Line → Line (line through center)&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/9cf250a9e7a0797fb694907bbb5c7a27/usage-12.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/98d44168161f4f045607366c009484c9/usage-12.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/3478cfdf2b857e779603434218aa91fb/usage-12.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/e1e189fbaca44febe56d20c6e8b2d4b1/usage-12.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-12.png" class="plot-directive" src="_images/usage-12.png" />
+</figure>
+</section>
+</section>
+<section id="intersection">
+<h2>Intersection<a class="headerlink" href="#intersection" title="Link to this heading"></a></h2>
+<p>Find the intersection points of two clines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="c1"># Two intersecting circles</span>
+<span class="n">C1</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">C1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">C2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span><span class="si">}</span><span class="s2"> intersection points&quot;</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  z = </span><span class="si">{</span><span class="n">p</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Circle and tangent line: 1 point</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">L</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># x=1</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">C</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">L</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Tangent: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span><span class="si">}</span><span class="s2"> point at z = </span><span class="si">{</span><span class="n">pts</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Two parallel lines: 0 points</span>
+<span class="n">L1</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">L2</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Parallel lines: </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">L1</span><span class="o">.</span><span class="n">intersection</span><span class="p">(</span><span class="n">L2</span><span class="p">))</span><span class="si">}</span><span class="s2"> points&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="angles-and-orthogonality">
+<h2>Angles and Orthogonality<a class="headerlink" href="#angles-and-orthogonality" title="Link to this heading"></a></h2>
+<p>Compute the angle between two clines, or test orthogonality directly:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Angle between two unit circles</span>
+<span class="n">C1</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C2</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">C1</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">C2</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Angle: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>  <span class="c1"># 120°</span>
+
+<span class="c1"># Orthogonality uses an algebraic criterion (no intersection needed)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="o">**</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Orthogonal: </span><span class="si">{</span><span class="n">S</span><span class="o">.</span><span class="n">is_orthogonal</span><span class="p">(</span><span class="n">C</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>  <span class="c1"># True</span>
+
+<span class="c1"># Two perpendicular lines</span>
+<span class="n">L1</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># real axis</span>
+<span class="n">L2</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_line</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="n">j</span><span class="p">)</span>   <span class="c1"># imaginary axis</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Angle: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">L1</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">L2</span><span class="p">))</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">°&quot;</span><span class="p">)</span>  <span class="c1"># 90°</span>
+</pre></div>
+</div>
+</section>
+<section id="symbolic-mode">
+<h2>Symbolic Mode<a class="headerlink" href="#symbolic-mode" title="Link to this heading"></a></h2>
+<p>Pass sympy types to get exact arithmetic — no floating point:</p>
+</section>
+<section id="neat-examples">
+<h2>Neat Examples<a class="headerlink" href="#neat-examples" title="Link to this heading"></a></h2>
+<section id="inverting-a-grid-in-the-unit-circle">
+<h3>Inverting a Grid in the Unit Circle<a class="headerlink" href="#inverting-a-grid-in-the-unit-circle" title="Link to this heading"></a></h3>
+<p>The 14 lines of the grid <span class="math notranslate nohighlight">\(x = k\)</span> and <span class="math notranslate nohighlight">\(y = k\)</span> for <span class="math notranslate nohighlight">\(k = -3, -2, \ldots, 3\)</span>
+have simple cline equations:</p>
+<ul class="simple">
+<li><p>Vertical line <span class="math notranslate nohighlight">\(x = k\)</span>: <span class="math notranslate nohighlight">\(c = 0,\; \alpha = 1,\; d = -2k\)</span></p></li>
+<li><p>Horizontal line <span class="math notranslate nohighlight">\(y = k\)</span>: <span class="math notranslate nohighlight">\(c = 0,\; \alpha = i,\; d = 2k\)</span></p></li>
+</ul>
+<p>Under inversion in the unit circle, lines through the origin (the axes) stay as lines,
+while the other 12 lines each become a circle passing through the origin.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">ks</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="p">(</span><span class="n">ax1</span><span class="p">,</span> <span class="n">ax2</span><span class="p">)</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+
+<span class="c1"># -- Left: original grid + unit circle --</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+    <span class="n">lw</span> <span class="o">=</span> <span class="mi">2</span> <span class="k">if</span> <span class="n">k</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">else</span> <span class="mi">1</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+    <span class="n">ax1</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="n">k</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;indianred&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Grid of 14 lines + unit circle&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Re(z)&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Im(z)&#39;</span><span class="p">)</span>
+
+<span class="c1"># -- Right: images under inversion --</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">ks</span><span class="p">:</span>
+    <span class="c1"># Vertical x=k: c=0, alpha=1, d=-2k</span>
+    <span class="n">Lv</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="o">+</span><span class="mi">0</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=-</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">Lv_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">Lv</span><span class="p">)</span>
+    <span class="c1"># Horizontal y=k: c=0, alpha=1j, d=2k</span>
+    <span class="n">Lh</span> <span class="o">=</span> <span class="n">Cline</span><span class="p">(</span><span class="n">c</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">1</span><span class="n">j</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">Lh_img</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">Lh</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">img</span><span class="p">,</span> <span class="n">color</span> <span class="ow">in</span> <span class="p">[(</span><span class="n">Lv_img</span><span class="p">,</span> <span class="s1">&#39;steelblue&#39;</span><span class="p">),</span> <span class="p">(</span><span class="n">Lh_img</span><span class="p">,</span> <span class="s1">&#39;indianred&#39;</span><span class="p">)]:</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">is_line</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">point_on_line</span>
+            <span class="n">d_vec</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">direction_vector</span>
+            <span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+            <span class="n">zs</span> <span class="o">=</span> <span class="n">p</span> <span class="o">+</span> <span class="n">t</span> <span class="o">*</span> <span class="n">d_vec</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">zs</span><span class="p">),</span> <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">img</span><span class="o">.</span><span class="n">is_circle</span><span class="p">:</span>
+            <span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">imag</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">radius</span>
+            <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">cx</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">cy</span> <span class="o">+</span> <span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
+                     <span class="n">color</span><span class="o">=</span><span class="n">color</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Images under inversion in unit circle&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Re(z)&#39;</span><span class="p">)</span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Im(z)&#39;</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/96e44f83ed52e63ec002ccfb92c748d9/usage-13.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/8e8d9f2becc36e2bb14100d83bc5927f/usage-13.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/eac899acc7f95e450d50914028b016bf/usage-13.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/99a6a8534f774d42daa0b49e6629e69a/usage-13.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-13.png" class="plot-directive" src="_images/usage-13.png" />
+</figure>
+</section>
+<section id="apollonius-theorem-via-cline-inversion">
+<h3>Apollonius’ Theorem via Cline Inversion<a class="headerlink" href="#apollonius-theorem-via-cline-inversion" title="Link to this heading"></a></h3>
+<p><strong>Theorem.</strong> Given three mutually tangent circles, there exist exactly two
+circles tangent to all three.</p>
+<video width="100%" controls>
+  <source src="_static/apollonius_proof.mp4" type="video/mp4">
+  Your browser does not support the video tag.
+</video><p><strong>Proof by inversion.</strong> Pick a tangent point P of two of the three circles.
+Translate so that P is at the origin. Now invert in the unit circle:</p>
+<ol class="arabic simple">
+<li><p>The two circles through the origin become <strong>parallel lines</strong>.</p></li>
+<li><p>The third circle (not through the origin) becomes a <strong>circle tangent to both lines</strong>.</p></li>
+<li><p>In this configuration, finding two circles tangent to two parallel lines and a
+circle between them is trivial — they sit above and below.</p></li>
+<li><p>Invert back and translate to recover the solution in the original picture.</p></li>
+</ol>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cline</span><span class="w"> </span><span class="kn">import</span> <span class="n">Cline</span>
+
+<span class="n">theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+
+<span class="c1"># Three mutually tangent circles with different radii</span>
+<span class="n">r1</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="n">r3</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">0.8</span>
+<span class="n">c1</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span>
+<span class="n">c2</span> <span class="o">=</span> <span class="p">(</span><span class="n">r1</span> <span class="o">+</span> <span class="n">r2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">0</span><span class="n">j</span>
+<span class="n">x3</span> <span class="o">=</span> <span class="p">((</span><span class="n">r1</span><span class="o">+</span><span class="n">r3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">r2</span><span class="o">+</span><span class="n">r3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">r1</span><span class="o">+</span><span class="n">r2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">r1</span><span class="o">+</span><span class="n">r2</span><span class="p">))</span>
+<span class="n">y3</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">r1</span><span class="o">+</span><span class="n">r3</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">x3</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">c3</span> <span class="o">=</span> <span class="n">x3</span> <span class="o">+</span> <span class="mi">1</span><span class="n">j</span><span class="o">*</span><span class="n">y3</span>
+
+<span class="c1"># Tangent point P between C1 and C2</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">r1</span> <span class="o">*</span> <span class="p">(</span><span class="n">c2</span> <span class="o">-</span> <span class="n">c1</span><span class="p">)</span> <span class="o">/</span> <span class="nb">abs</span><span class="p">(</span><span class="n">c2</span> <span class="o">-</span> <span class="n">c1</span><span class="p">)</span>
+
+<span class="c1"># Translate P to origin</span>
+<span class="n">c1t</span><span class="p">,</span> <span class="n">c2t</span><span class="p">,</span> <span class="n">c3t</span> <span class="o">=</span> <span class="n">c1</span> <span class="o">-</span> <span class="n">P</span><span class="p">,</span> <span class="n">c2</span> <span class="o">-</span> <span class="n">P</span><span class="p">,</span> <span class="n">c3</span> <span class="o">-</span> <span class="n">P</span>
+
+<span class="c1"># Invert in unit circle</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">C1i</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="n">c1t</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r1</span><span class="p">))</span>
+<span class="n">C2i</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="n">c2t</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r2</span><span class="p">))</span>
+<span class="n">C3i</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="n">c3t</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="n">r3</span><span class="p">))</span>
+
+<span class="c1"># Line positions</span>
+<span class="n">x_l1</span> <span class="o">=</span> <span class="o">-</span><span class="n">C1i</span><span class="o">.</span><span class="n">d</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">C1i</span><span class="o">.</span><span class="n">alpha</span><span class="p">))</span>
+<span class="n">x_l2</span> <span class="o">=</span> <span class="o">-</span><span class="n">C2i</span><span class="o">.</span><span class="n">d</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">C2i</span><span class="o">.</span><span class="n">alpha</span><span class="p">))</span>
+
+<span class="c1"># Solution circles in inverted picture</span>
+<span class="n">mid_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_l1</span> <span class="o">+</span> <span class="n">x_l2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">r_sol</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">x_l2</span> <span class="o">-</span> <span class="n">x_l1</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+<span class="n">cx3i</span><span class="p">,</span> <span class="n">cy3i</span><span class="p">,</span> <span class="n">r3i</span> <span class="o">=</span> <span class="n">C3i</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">center</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">radius</span>
+<span class="n">dx</span> <span class="o">=</span> <span class="n">mid_x</span> <span class="o">-</span> <span class="n">cx3i</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">(</span><span class="n">r_sol</span> <span class="o">+</span> <span class="n">r3i</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">dx</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+<span class="n">A1i</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">mid_x</span><span class="p">,</span> <span class="n">cy3i</span> <span class="o">+</span> <span class="n">dy</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">r_sol</span><span class="p">)</span>
+<span class="n">A2i</span> <span class="o">=</span> <span class="n">Cline</span><span class="o">.</span><span class="n">from_circle</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="nb">complex</span><span class="p">(</span><span class="n">mid_x</span><span class="p">,</span> <span class="n">cy3i</span> <span class="o">-</span> <span class="n">dy</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">r_sol</span><span class="p">)</span>
+
+<span class="c1"># Invert back and translate</span>
+<span class="n">A1t</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">A1i</span><span class="p">)</span>
+<span class="n">A2t</span> <span class="o">=</span> <span class="n">S</span><span class="o">.</span><span class="n">invert</span><span class="p">(</span><span class="n">A2i</span><span class="p">)</span>
+<span class="n">A1_c</span><span class="p">,</span> <span class="n">A1_r</span> <span class="o">=</span> <span class="n">A1t</span><span class="o">.</span><span class="n">center</span> <span class="o">+</span> <span class="n">P</span><span class="p">,</span> <span class="n">A1t</span><span class="o">.</span><span class="n">radius</span>
+<span class="n">A2_c</span><span class="p">,</span> <span class="n">A2_r</span> <span class="o">=</span> <span class="n">A2t</span><span class="o">.</span><span class="n">center</span> <span class="o">+</span> <span class="n">P</span><span class="p">,</span> <span class="n">A2t</span><span class="o">.</span><span class="n">radius</span>
+
+<span class="c1"># --- 4-panel proof ---</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mf">6.5</span><span class="p">))</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">co</span><span class="o">=</span><span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">real</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">+</span><span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">imag</span><span class="p">(</span><span class="n">c</span><span class="p">)</span><span class="o">+</span><span class="n">r</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span>
+            <span class="n">color</span><span class="o">=</span><span class="n">co</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="n">lw</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">lb</span><span class="p">)</span>
+
+<span class="c1"># Step 1: original</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="s1">&#39;$A</span><span class="se">\\</span><span class="s1"> (r=1)$&#39;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="s1">&#39;teal&#39;</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="s1">&#39;$B</span><span class="se">\\</span><span class="s1"> (r=1.5)$&#39;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="s1">&#39;mediumpurple&#39;</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="s1">&#39;$C</span><span class="se">\\</span><span class="s1"> (r=0.8)$&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">real</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">imag</span><span class="p">,</span> <span class="s1">&#39;ko&#39;</span><span class="p">,</span> <span class="n">ms</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">real</span><span class="o">+</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="n">imag</span><span class="o">-</span><span class="mf">0.18</span><span class="p">,</span> <span class="s1">&#39;$P$&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">11</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">4.5</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Step 1: Three tangent circles&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">)</span>
+
+<span class="c1"># Step 2: translated + inverted</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_l1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$A&#39;$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_l2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;teal&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;$B&#39;$&quot;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;mediumpurple&#39;</span><span class="p">,</span> <span class="n">lb</span><span class="o">=</span><span class="s2">&quot;$C&#39;$&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Step 2: Translate + invert&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 3: add solution circles</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_l1</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">x_l2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;teal&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mf">1.5</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">C3i</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;mediumpurple&#39;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">A1i</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">A1i</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;crimson&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;Solution 1&#39;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">A2i</span><span class="o">.</span><span class="n">center</span><span class="p">,</span> <span class="n">A2i</span><span class="o">.</span><span class="n">radius</span><span class="p">,</span> <span class="s1">&#39;orangered&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;Solution 2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mf">1.2</span><span class="p">,</span> <span class="mf">2.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Step 3: Find tangent circles&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;lower right&#39;</span><span class="p">)</span>
+
+<span class="c1"># Step 4: invert back + translate</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">axes</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c1</span><span class="p">,</span> <span class="n">r1</span><span class="p">,</span> <span class="s1">&#39;steelblue&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c2</span><span class="p">,</span> <span class="n">r2</span><span class="p">,</span> <span class="s1">&#39;teal&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">c3</span><span class="p">,</span> <span class="n">r3</span><span class="p">,</span> <span class="s1">&#39;mediumpurple&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">A1_c</span><span class="p">,</span> <span class="n">A1_r</span><span class="p">,</span> <span class="s1">&#39;crimson&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;Solution 1&#39;</span><span class="p">)</span>
+<span class="n">dc</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">A2_c</span><span class="p">,</span> <span class="n">A2_r</span><span class="p">,</span> <span class="s1">&#39;orangered&#39;</span><span class="p">,</span> <span class="mf">2.5</span><span class="p">,</span> <span class="s1">&#39;Solution 2&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">);</span> <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Step 4: Invert back + translate&#39;</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s2">&quot;Apollonius&#39; Theorem: visual proof via cline inversion&quot;</span><span class="p">,</span>
+             <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">,</span> <span class="n">fontweight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">1.02</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>(<a class="reference download internal" download="" href="_downloads/4da7e20ccf4405b1e2916ac964ab9a3f/usage-14.py"><code class="xref download docutils literal notranslate"><span class="pre">Source</span> <span class="pre">code</span></code></a>, <a class="reference download internal" download="" href="_downloads/85fd3d2dede33595d73f3422ecc23fa2/usage-14.png"><code class="xref download docutils literal notranslate"><span class="pre">png</span></code></a>, <a class="reference download internal" download="" href="_downloads/9069ad65aba6d383a0764ae02c4c3530/usage-14.hires.png"><code class="xref download docutils literal notranslate"><span class="pre">hires.png</span></code></a>, <a class="reference download internal" download="" href="_downloads/b46c04858e5a2d5908a7df6b80703f66/usage-14.pdf"><code class="xref download docutils literal notranslate"><span class="pre">pdf</span></code></a>)</p>
+<figure class="align-default">
+<img alt="_images/usage-14.png" class="plot-directive" src="_images/usage-14.png" />
+</figure>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="reference.html" class="btn btn-neutral float-right" title="Reference" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025-2026, Veliko Donchev.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
